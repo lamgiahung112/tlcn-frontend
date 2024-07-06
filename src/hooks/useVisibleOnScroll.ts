@@ -8,10 +8,8 @@ function useVisibleOnScroll(element: RefObject<HTMLElement>) {
             if (!element.current) return;
             const triggerPosition = element.current.getBoundingClientRect().y;
             const viewportHeight = window.innerHeight;
-            const triggerOffset = 100;
-            console.log({ triggerPosition, viewportHeight });
-
-            // Weird case: first time scroll, the trigger position is 0
+            const triggerOffset = 300;
+            console.log({triggerPosition, threshold: viewportHeight-triggerOffset});
             if (triggerPosition > 0 && triggerPosition < viewportHeight - triggerOffset) {
                 setVisible(true);
             }

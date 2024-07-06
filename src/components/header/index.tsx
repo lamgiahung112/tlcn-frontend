@@ -1,5 +1,5 @@
 import logoExpressive from '@/assets/images/logo_expressive.png'
-import HeaderLink from "./components/header_link.tsx";
+import HeaderLink from "./components/HeaderLink.tsx";
 import {memo, useMemo} from "react";
 
 function Header() {
