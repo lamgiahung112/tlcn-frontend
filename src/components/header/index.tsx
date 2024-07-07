@@ -29,7 +29,7 @@ function Header() {
             link: "/xe"
         },
     ], [])
-    return <div className="fixed px-4 h-header-height w-screen inset-0 flex justify-between z-10 bg-white">
+    return <div className="fixed px-4 h-header-height w-full inset-0 flex justify-between z-10 bg-white">
         <img src={logoExpressive} alt="logo" />
         <div className="flex justify-between items-center gap-x-4 md:gap-x-8">
             {subheaders.map(sub => {
