@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "@/components/header";
 const Dashboard = lazy(() => import("@/pages/dashboard"));
 const MotorbikeDetail = lazy(() => import("@/pages/motorbike-detail"));
+const MotorbikeList = lazy(() => import("@/pages/motorbike-list"));
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/xe/:category/:motorbike-slug" element={<MotorbikeDetail />} />
+            <Route path="/xe" element={<MotorbikeList />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -38,7 +38,7 @@ function Explore() {
                     Xuất phát từ khái niệm "kết hợp phong cách thể thao và sự tinh tế thời thượng", LEXI 2024 hoàn toàn mới mang lại sức hấp dẫn khó cưỡng với kiểu dáng hiện đại và sang trọng, khả năng kết nối điện thoại thông minh tiện lợi, sức mạnh khối động cơ 155cc cho công suất và hiệu suất vượt trội so với những khối động cơ cùng dung tích.
                 </div>
                 <Link to="/sosanh" className="bg-black text-white text-center py-4 px-16 rounded-lg">
-                    So sanh xe
+                    SO SÁNH XE
                 </Link>
             </div>
         </div>
