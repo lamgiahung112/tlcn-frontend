@@ -5,7 +5,7 @@ interface VehicleDisplayProps {
 }
 
 function VehicleDisplay(props: VehicleDisplayProps) {
-    return <div className="absolute z-20 bottom-[-5%] left-[15%] w-[75%] h-[75%]">
+    return <div className="absolute z-20 bottom-[15vh] left-[10vw] w-[33vw] h-[33vh]">
         <img src={props.item.image} alt={props.item.name} />
     </div>
 }

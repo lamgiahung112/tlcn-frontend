@@ -1,5 +1,5 @@
 import {VehicleExplorerItem} from "./index.tsx";
-import IconArrowRight from "../../../common/icons/IconArrowRight.tsx";
+import IconArrowRight from "../../../../components/common/icons/IconArrowRight.tsx";
 import {Link} from "react-router-dom";
 import {twMerge} from "tailwind-merge";
 

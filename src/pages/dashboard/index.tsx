@@ -1,4 +1,4 @@
-import Carousel from "../common/carousel";
+import Carousel from "../../components/common/carousel";
 import banner_2 from '@/assets/images/banner_2.png'
 import banner_3 from '@/assets/images/banner_3.png'
 import lexiPng from '@/assets/images/lexi.png'
