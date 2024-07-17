@@ -16,11 +16,24 @@ function PriceSlider() {
 
         function handleDrag(event: MouseEvent) {
             if (!isDragging || draggingElement === 0) return;
-            console.log(event.clientX);
 
             if (draggingElement === -1) {
+                let offset = event.clientX - minAnchorX!;
+                offset = Math.max(0, offset);
+                offset = Math.min(maxAnchorX! - minAnchorX!, offset);
+                if (maxX < 0) {
+                    offset = Math.min(maxX! + maxAnchorX! - minAnchorX!, offset);
+                }
+                setMinX(offset);
             }
             if (draggingElement === 1) {
+                let offset = maxAnchorX! - event.clientX;
+                offset = Math.max(0, offset);
+                offset = Math.min(maxAnchorX! - minAnchorX!, offset);
+                if (minX > 0) {
+                    offset = Math.min(maxAnchorX! - minAnchorX! - minX, offset);
+                }
+                setMaxX(-offset);
             }
         }
 
