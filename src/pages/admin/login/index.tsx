@@ -3,7 +3,7 @@ import { RootState } from "@/store.ts";
 import { Navigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import getIsSessionValid from "../../../api/auth/getIsSessionValid.ts";
-import { auth, removeAuth } from "../../../slices/sessionSlice.tsx";
+import { auth, removeAuth } from "../../../slices/session-slice.tsx";
 import login from "../../../api/auth/login.ts";
 
 function AdminLoginPage() {

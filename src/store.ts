@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import sessionSlice from "./slices/sessionSlice.tsx";
+import sessionSlice from "./slices/session-slice.tsx";
+import mediaResourceSlice from "./slices/admin/media-resource-filter-slice.ts";
 
 export const store = configureStore({
   reducer: {
     session: sessionSlice.reducer,
+    mediaResourceFilter: mediaResourceSlice.reducer
   },
 });
 

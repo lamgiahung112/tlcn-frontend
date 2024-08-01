@@ -9,6 +9,7 @@ const MotorbikeDetail = lazy(() => import("@/pages/motorbike-detail"));
 const MotorbikeList = lazy(() => import("@/pages/motorbike-list"));
 const AdminPage = lazy(() => import("@/pages/admin"));
 const AdminLoginPage = lazy(() => import("@/pages/admin/login"));
+const AdminMediaResourcePage = lazy(() => import("@/pages/admin/media"));
 
 const publicRoutes = [
   {
@@ -30,6 +31,10 @@ const adminRoutes = [
     path: "/admin",
     element: <AdminPage />,
   },
+  {
+    path: "/admin/media",
+    element: <AdminMediaResourcePage/>
+  }
 ];
 
 function App() {

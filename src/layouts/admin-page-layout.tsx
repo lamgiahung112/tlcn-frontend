@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store.ts";
 import { Navigate } from "react-router-dom";
 import getIsSessionValid from "@/api/auth/getIsSessionValid.ts";
-import { auth, removeAuth } from "@/slices/sessionSlice.tsx";
+import { auth, removeAuth } from "@/slices/session-slice.tsx";
 import Header from "@/components/admin/header";
 import NavigationBar from "@/components/admin/NavigationBar";
 

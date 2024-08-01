@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SessionSlice {
-  sessionId: string;
+  sessionId?: string;
 }
 
 const initialState: SessionSlice = {
-  sessionId: "",
+  sessionId: undefined,
 };
 
 const sessionSlice = createSlice({
