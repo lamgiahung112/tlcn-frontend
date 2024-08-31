@@ -1,8 +1,8 @@
 export type Sortable<T extends string> = {
-    [key in T]: 'ASC' | 'DESC' | undefined
+	[key in T]: "asc" | "desc" | undefined
 }
 
 export type Pagable = {
-    page: number;
-    size: number;
+	page: number
+	size: number
 }

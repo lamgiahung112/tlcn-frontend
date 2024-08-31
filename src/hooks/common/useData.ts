@@ -1,26 +1,33 @@
-import { useState} from "react";
-import {AxiosResponse} from 'axios'
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "@/store"
+import { startLoading, stopLoading } from "@/slices/loading-slice"
 
-function useData<T, P = undefined>(fetcherFunc: (params: P) => Promise<AxiosResponse<T>>) {
-    const [data, setData] = useState<T | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | undefined>(undefined);
+function useData<T, P = undefined>(
+	fetcherFunc: (params: P) => Promise<T>,
+	defaultValue?: T
+) {
+	const [data, setData] = useState<T | undefined>(defaultValue)
+	const dispatch = useDispatch<AppDispatch>()
+	const [error, setError] = useState<string | undefined>(undefined)
 
-    function fetch(params: P) {
-        setIsLoading(true);
-        fetcherFunc(params)
-            .then(res => res.data)
-            .then(data => setData(data))
-            .catch(err => setError(err))
-            .finally(() => setIsLoading(false));
-    }
+	function fetch(params: P) {
+		dispatch(startLoading())
+		fetcherFunc(params)
+			.then((res) => res)
+			.then((data) => setData(data))
+			.catch((err) => {
+				setError(err)
+				setData(defaultValue)
+			})
+			.finally(() => dispatch(stopLoading()))
+	}
 
-    return {
-        data,
-        isLoading,
-        error,
-        fetch
-    }
+	return {
+		data,
+		error,
+		fetch,
+	}
 }
 
-export default useData;
+export default useData
