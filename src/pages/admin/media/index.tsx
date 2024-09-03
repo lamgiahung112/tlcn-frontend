@@ -1,15 +1,23 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../store.ts"
 import { setName, setSort } from "../../../slices/admin/media-resource-filter-slice.ts"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import getMediaResourceList from "@/api/admin/media-resource/getMediaResourceList.ts"
 import MediaCard from "./media-card.tsx"
 import useData from "@/hooks/common/useData.ts"
+import MediaPopup from "./media-popup.tsx"
 
 function MediaPage() {
 	const filters = useSelector((state: RootState) => state.mediaResourceFilter)
 	const dispatch = useDispatch()
 	const { data, fetch } = useData(getMediaResourceList, [])
+	const [popupData, setPopupData] = useState<{
+		open: boolean
+		resource: MediaResource | undefined
+	}>({
+		open: false,
+		resource: undefined,
+	})
 
 	useEffect(() => {
 		fetch(filters)
@@ -19,7 +27,10 @@ function MediaPage() {
 		<div className="flex flex-col gap-y-4 px-4 w-full h-minus-header">
 			<div className="flex gap-x-4 items-center">
 				<div className="text-3xl font-semibold">Media Resources</div>
-				<button className="px-8 py-2 rounded-md bg-green-500 text-white hover:bg-green-400">
+				<button
+					onClick={() => setPopupData({ open: true, resource: undefined })}
+					className="px-8 py-2 rounded-md bg-green-500 text-white hover:bg-green-400"
+				>
 					Upload
 				</button>
 			</div>
@@ -27,6 +38,10 @@ function MediaPage() {
 				className="p-4 outline outline-[1px] outline-neutral-300 rounded-md border-transparent"
 				placeholder="Search by name"
 				onChange={(e) => dispatch(setName(e.target.value))}
+			/>
+			<MediaPopup
+				onPopupClose={() => setPopupData({ open: false, resource: undefined })}
+				data={popupData}
 			/>
 			<div className="flex gap-x-4">
 				<div>Created date:</div>
@@ -58,7 +73,11 @@ function MediaPage() {
 			</div>
 			<div className="flex flex-wrap gap-x-8 gap-y-8">
 				{data?.map((r) => (
-					<MediaCard resource={r} key={r.id} />
+					<MediaCard
+						onClick={(r) => setPopupData({ open: true, resource: r })}
+						resource={r}
+						key={r.id}
+					/>
 				))}
 			</div>
 		</div>
