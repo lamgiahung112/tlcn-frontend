@@ -12,11 +12,14 @@ function useData<T, P = undefined>(
 	const dispatch = useDispatch<AppDispatch>()
 	const [error, setError] = useState<string[]>([])
 
-	function fetch(params: P) {
+	function fetch(params: P, onSuccess?: () => void, onFail?: () => void) {
 		dispatch(startLoading())
 		fetcherFunc(params)
 			.then((res) => res)
-			.then((data) => setData(data))
+			.then((data) => {
+				setData(data)
+				onSuccess?.call(null)
+			})
 			.catch((err: AxiosError<T>) => {
 				// @ts-ignore
 				if (Array.isArray(err.response?.data?.message)) {
@@ -30,8 +33,11 @@ function useData<T, P = undefined>(
 					])
 				}
 				setData(defaultValue)
+				onFail?.call(null)
 			})
-			.finally(() => dispatch(stopLoading()))
+			.finally(() => {
+				dispatch(stopLoading())
+			})
 	}
 
 	return {
