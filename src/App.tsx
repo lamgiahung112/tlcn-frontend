@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "./store.ts"
 import { twMerge } from "tailwind-merge"
 import MotorbikePage from "./pages/admin/motorbike/index.tsx"
+import PostPage from "./pages/admin/posts/index.tsx"
 
 const Dashboard = lazy(() => import("@/pages/dashboard"))
 const MotorbikeDetail = lazy(() => import("@/pages/motorbike-detail"))
@@ -42,6 +43,10 @@ const adminRoutes = [
 	{
 		path: "/admin/motorbikes",
 		element: <MotorbikePage />,
+	},
+	{
+		path: "/admin/posts",
+		element: <PostPage />,
 	},
 ]
 

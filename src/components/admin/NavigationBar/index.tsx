@@ -7,6 +7,7 @@ function NavigationBar() {
 			<div className="text-gray-300 flex flex-col gap-y-4">
 				<NavLink to="/admin/motorbikes">Motorbikes</NavLink>
 				<NavLink to="/admin/media">Media Resources</NavLink>
+				<NavLink to="/admin/posts">Posts</NavLink>
 			</div>
 		</nav>
 	)
