@@ -1,15 +1,26 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom"
 
 function NavigationBar() {
-  return (
-    <div className="h-minus-header bg-red-300 p-4 flex-shrink-0">
-      <div className="text-2xl font-medium text-white mb-4">YAMAHA ADMIN</div>
-      <div className="text-white flex flex-col gap-y-2">
-          <Link to="/admin/motorbikes">Motorbikes</Link>
-          <Link to="/admin/media">Media Resources</Link>
-      </div>
-    </div>
-  );
+	return (
+		<nav className="h-minus-header bg-gray-800 p-6 flex-shrink-0">
+			<div className="text-2xl font-bold text-white mb-6">YAMAHA ADMIN</div>
+			<div className="text-gray-300 flex flex-col gap-y-4">
+				<NavLink to="/admin/motorbikes">Motorbikes</NavLink>
+				<NavLink to="/admin/media">Media Resources</NavLink>
+			</div>
+		</nav>
+	)
 }
 
-export default NavigationBar;
+function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
+	return (
+		<Link
+			to={to}
+			className="transition-colors duration-200 hover:text-white hover:bg-gray-700 px-4 py-2 rounded-md"
+		>
+			{children}
+		</Link>
+	)
+}
+
+export default NavigationBar

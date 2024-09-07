@@ -1,14 +1,18 @@
-import {twMerge} from "tailwind-merge";
+import { twMerge } from "tailwind-merge"
 
 interface LoadingProps {
-    className?: string;
+	className?: string
 }
 
-function Loading(props: LoadingProps){
-    return <div className={twMerge(
-        "rounded-full border-4 border-transparent border-t-amber-300 w-10 h-10 animate-spin-cubic",
-        props.className,
-    )}></div>
+function Loading(props: LoadingProps) {
+	return (
+		<div
+			className={twMerge(
+				"rounded-full transition border-4 border-transparent border-t-amber-300 w-10 h-10 animate-spin-cubic",
+				props.className
+			)}
+		></div>
+	)
 }
 
 export default Loading

@@ -6,6 +6,7 @@ import AdminPageLayout from "./layouts/admin-page-layout.tsx"
 import { useSelector } from "react-redux"
 import { RootState } from "./store.ts"
 import { twMerge } from "tailwind-merge"
+import MotorbikePage from "./pages/admin/motorbike/index.tsx"
 
 const Dashboard = lazy(() => import("@/pages/dashboard"))
 const MotorbikeDetail = lazy(() => import("@/pages/motorbike-detail"))
@@ -37,6 +38,10 @@ const adminRoutes = [
 	{
 		path: "/admin/media",
 		element: <AdminMediaResourcePage />,
+	},
+	{
+		path: "/admin/motorbikes",
+		element: <MotorbikePage />,
 	},
 ]
 
