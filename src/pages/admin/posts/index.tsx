@@ -1,54 +1,34 @@
-import { useState } from "react"
-import ReactMarkdown from "react-markdown"
+import getPostList from "@/api/posts/getPostList"
+import PostItem from "@/components/common/post-item"
+import useData from "@/hooks/common/useData"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
-const markdownStyles = `
-  .markdown-body h1 {
-    font-size: 2.5em;
-    border-bottom: 1px solid #eaecef;
-    padding-bottom: 0.3em;
-  }
-  .markdown-body h2 {
-    font-size: 2em;
-    border-bottom: 1px solid #eaecef;
-    padding-bottom: 0.3em;
-  }
-  .markdown-body h3 {
-    font-size: 1.5em;
-  }
-  .markdown-body h4 {
-    font-size: 1.25em;
-  }
-  .markdown-body h5 {
-    font-size: 1em;
-  }
-  .markdown-body h6 {
-    font-size: 0.875em;
-    color: #6a737d;
-  }
-`
+function PostsPage() {
+	const navigate = useNavigate()
+	const { data: posts, fetch: fetchPosts } = useData(getPostList, [])
 
-function PostPage() {
-	const [content, setContent] = useState("")
+	useEffect(() => {
+		fetchPosts(undefined)
+	}, [])
 
 	return (
-		<div className="container mx-auto p-4">
-			<style>{markdownStyles}</style>
-			<h1 className="text-3xl font-bold mb-6">Edit Post</h1>
-			<div className="flex gap-x-4">
-				<div className="w-1/2">
-					<textarea
-						value={content}
-						onChange={(e) => setContent(e.target.value)}
-						placeholder="Write your post in markdown format"
-						className="w-full h-screen p-2 border rounded"
-					/>
-				</div>
-				<div className="w-1/2 border rounded p-4 markdown-body">
-					<ReactMarkdown>{content}</ReactMarkdown>
-				</div>
+		<div className="flex flex-col gap-y-4 px-4 py-6 w-full h-minus-header overflow-auto">
+			<div className="flex justify-between items-center mb-6">
+				<h1 className="text-3xl font-bold">Posts</h1>
+				<button
+					onClick={() => navigate("/admin/posts/add")}
+					className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
+				>
+					Create New Post
+				</button>
+			</div>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				{posts &&
+					posts.map((post) => <PostItem key={post.id} post={post} isAdmin />)}
 			</div>
 		</div>
 	)
 }
 
-export default PostPage
+export default PostsPage

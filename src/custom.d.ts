@@ -1,28 +1,15 @@
-export namespace Db {
+namespace Db {
 	export enum Category {
 		STROKE = "STROKE",
 		SCOOTER = "SCOOTER",
 		HEAVYBIKE = "HEAVYBIKE",
 	}
 
-	export enum ResourceType {
-		IMAGE = "IMAGE",
-		VIDEO = "VIDEO",
-	}
-
-	// export interface Staff {
-	//   id: string
-	//   name: string
-	//   email: string
-	//   password: string
-	// }
-
 	export interface Resource {
 		id: string
 		url: string
 		name: string
 		created_at: string
-		type: ResourceType
 	}
 
 	export interface Model {
@@ -69,4 +56,11 @@ export namespace Db {
 		modified_at: string
 		views: number
 	}
+
+	export namespace Response {
+		export type PostItem = Omit<Post, "content"> & { thumbnail: Resource }
+		export type PostDetail = Post & { thumbnail: Resource }
+	}
 }
+
+export type { Db }

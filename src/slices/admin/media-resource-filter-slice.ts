@@ -1,9 +1,11 @@
+import { Db } from "@/custom.js"
 import { Pagable, Sortable } from "../../utils/api-request-utils.ts"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface MediaResourceFilterSlice extends Pagable {
 	name?: string
 	sort: Sortable<"created_at">
+	type?: Db.ResourceType
 }
 
 const initialState: MediaResourceFilterSlice = {

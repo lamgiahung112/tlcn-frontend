@@ -1,8 +1,9 @@
 import addResource from "@/api/admin/media-resource/addResource"
 import updateResource from "@/api/admin/media-resource/updateResource"
 import useData from "@/hooks/common/useData"
-import { Db } from "custom"
+import { Db } from "@/custom"
 import { useRef, useState } from "react"
+import deleteResource from "@/api/admin/media-resource/deleteResource"
 
 type PopupProps = {
 	onClose: () => void
@@ -91,6 +92,7 @@ function AddMediaPopup({ onClose }: AddMediaPopupProps) {
 function UpdateMediaPopup({ onClose, resource }: UpdateMediaPopupProps) {
 	const [name, setName] = useState(resource.name)
 	const { fetch: update, error: updateErrors } = useData(updateResource)
+	const { fetch: remove } = useData(deleteResource)
 
 	return (
 		<PopupWrapper onClose={onClose} title="Update Resource">
@@ -136,7 +138,7 @@ function UpdateMediaPopup({ onClose, resource }: UpdateMediaPopupProps) {
 					)}
 				</div>
 			</div>
-			<div className="mt-6 flex justify-end">
+			<div className="mt-6 flex justify-end gap-x-4">
 				<button
 					onClick={() => {
 						update({ id: resource.id, fileName: name }, onClose)
@@ -145,6 +147,12 @@ function UpdateMediaPopup({ onClose, resource }: UpdateMediaPopupProps) {
 					disabled={name === resource.name}
 				>
 					Update
+				</button>
+				<button
+					onClick={() => remove({ id: resource.id }, onClose)}
+					className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition-colors"
+				>
+					Delete
 				</button>
 			</div>
 		</PopupWrapper>

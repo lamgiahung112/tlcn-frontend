@@ -6,7 +6,7 @@ import getMediaResourceList from "@/api/admin/media-resource/getMediaResourceLis
 import MediaCard from "./media-card.tsx"
 import useData from "@/hooks/common/useData.ts"
 import { AddMediaPopup, UpdateMediaPopup } from "./media-popup.tsx"
-import { Db } from "custom"
+import { Db } from "@/custom.js"
 
 function MediaPage() {
 	const filters = useSelector((state: RootState) => state.mediaResourceFilter)

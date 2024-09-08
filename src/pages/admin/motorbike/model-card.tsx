@@ -1,4 +1,4 @@
-import { Db } from "custom"
+import { Db } from "@/custom"
 
 interface ModelCardProps {
 	model: Db.Model

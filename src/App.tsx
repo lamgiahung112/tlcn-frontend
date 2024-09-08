@@ -8,6 +8,8 @@ import { RootState } from "./store.ts"
 import { twMerge } from "tailwind-merge"
 import MotorbikePage from "./pages/admin/motorbike/index.tsx"
 import PostPage from "./pages/admin/posts/index.tsx"
+import EditPostPage from "./pages/admin/posts/edit/index.tsx"
+import AddPostPage from "./pages/admin/posts/add/index.tsx"
 
 const Dashboard = lazy(() => import("@/pages/dashboard"))
 const MotorbikeDetail = lazy(() => import("@/pages/motorbike-detail"))
@@ -47,6 +49,14 @@ const adminRoutes = [
 	{
 		path: "/admin/posts",
 		element: <PostPage />,
+	},
+	{
+		path: "/admin/posts/:post-id",
+		element: <EditPostPage />,
+	},
+	{
+		path: "/admin/posts/add",
+		element: <AddPostPage />,
 	},
 ]
 

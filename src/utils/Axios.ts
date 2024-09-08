@@ -25,4 +25,22 @@ export class Axios {
 			})
 			.then((res) => res.data.data)
 	}
+
+	static put<T, B>(url: string, data: B) {
+		return instance
+			.put<{ data: T }>(url, data, {
+				headers: {
+					"x-session-id": localStorage.getItem("__session__"),
+				},
+			})
+			.then((res) => res.data.data)
+	}
+
+	static delete<T>(url: string) {
+		return instance.delete<{ data: T }>(url, {
+			headers: {
+				"x-session-id": localStorage.getItem("__session__"),
+			},
+		})
+	}
 }
