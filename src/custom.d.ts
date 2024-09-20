@@ -1,9 +1,5 @@
 namespace Db {
-	export enum Category {
-		STROKE = "STROKE",
-		SCOOTER = "SCOOTER",
-		HEAVYBIKE = "HEAVYBIKE",
-	}
+	export type Category = "STROKE" | "SCOOTER" | "HEAVY"
 
 	export interface Resource {
 		id: string
@@ -36,21 +32,35 @@ namespace Db {
 		name: string
 		category: Category
 		model_id: string
-		recommended_price: string
+		recommended_price: number
 		description: string
-		color: string
-		colorInHex: string
-		engineSpecs: Record<string, string>
-		chassisSpecs: Record<string, string>
-		sizeSpecs: Record<string, string>
-		warrantySpecs: Record<string, string>
+		engineSpecs: Record<string, any>
+		chassisSpecs: Record<string, any>
+		sizeSpecs: Record<string, any>
+		warrantySpecs: Record<string, any>
+	}
+
+	export interface MotorbikeVariant {
+		id: string
+		motorbike_id: string
+		color_id: string
+	}
+
+	export interface Color {
+		id: string
+		name: string
+		hex: string
+	}
+
+	export interface VariantDisplayPicture {
+		resource_id: string
+		variant_id: string
 	}
 
 	export interface Post {
 		id: string
 		title: string
 		thumbnail_resource_id: string
-		author_id: string
 		content: string
 		created_at: string
 		modified_at: string

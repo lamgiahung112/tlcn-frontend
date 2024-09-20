@@ -1,23 +1,24 @@
-import { deleteModel, updateModel } from "@/api/models"
+import { updateColor, deleteColor } from "@/api/color"
 import { Db } from "@/custom"
 import useApi from "@/hooks/common/useApi"
 import React, { useState } from "react"
 
-interface ModelCardProps {
-	model: Db.Model
+interface ColorCardProps {
+	color: Db.Color
 	onUpdate: () => void
 }
 
-function ModelCard({ model, onUpdate }: ModelCardProps) {
+function ColorCard({ color, onUpdate }: ColorCardProps) {
 	const [isEditing, setIsEditing] = useState(false)
-	const [name, setName] = useState(model.name)
-	const [description, setDescription] = useState(model.description)
+	const [name, setName] = useState(color.name)
+	const [hex, setHex] = useState(color.hex)
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-	const { fetch: update } = useApi(updateModel)
-	const { fetch: tryDelete } = useApi(deleteModel)
+	const { fetch: update } = useApi(updateColor)
+	const { fetch: tryDelete } = useApi(deleteColor)
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
-		update({ id: model.id, name, description }, () => {
+		update({ id: color.id, name, hex }, () => {
 			setIsEditing(false)
 			onUpdate()
 		})
@@ -25,7 +26,7 @@ function ModelCard({ model, onUpdate }: ModelCardProps) {
 
 	const handleDelete = () => {
 		setShowDeleteConfirmation(false)
-		tryDelete(model.id)
+		tryDelete(color.id, onUpdate)
 	}
 
 	return (
@@ -50,19 +51,25 @@ function ModelCard({ model, onUpdate }: ModelCardProps) {
 					</div>
 					<div>
 						<label
-							htmlFor="description"
+							htmlFor="hex"
 							className="block text-sm font-medium text-gray-700 mb-1"
 						>
-							Description
+							Hex Color
 						</label>
-						<textarea
-							id="description"
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-							rows={3}
-							required
-						></textarea>
+						<div className="flex items-center space-x-2">
+							<input
+								type="text"
+								id="hex"
+								value={hex}
+								onChange={(e) => setHex(e.target.value)}
+								className="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								required
+							/>
+							<div
+								className="w-10 h-10 rounded-md border border-gray-300"
+								style={{ backgroundColor: hex }}
+							></div>
+						</div>
 					</div>
 					<div className="flex justify-end space-x-2">
 						<button
@@ -82,8 +89,14 @@ function ModelCard({ model, onUpdate }: ModelCardProps) {
 				</form>
 			) : (
 				<>
-					<h3 className="text-lg font-semibold mb-2">{model.name}</h3>
-					<p className="text-gray-600 mb-4">{model.description}</p>
+					<div className="flex items-center space-x-2 mb-2">
+						<h3 className="text-lg font-semibold">{color.name}</h3>
+						<div
+							className="w-6 h-6 rounded-full border border-gray-300"
+							style={{ backgroundColor: color.hex }}
+						></div>
+					</div>
+					<p className="text-gray-600 mb-4">Hex: {color.hex}</p>
 					<div className="flex space-x-2">
 						<button
 							onClick={() => setIsEditing(true)}
@@ -105,8 +118,7 @@ function ModelCard({ model, onUpdate }: ModelCardProps) {
 					<div className="bg-white p-6 rounded-lg shadow-lg">
 						<h4 className="text-lg font-semibold mb-4">Confirm Deletion</h4>
 						<p className="mb-4">
-							Are you sure you want to delete model {model.name} and all
-							motorbikes of this model?
+							Are you sure you want to delete color {color.name}?
 						</p>
 						<div className="flex justify-end space-x-2">
 							<button
@@ -129,4 +141,4 @@ function ModelCard({ model, onUpdate }: ModelCardProps) {
 	)
 }
 
-export default ModelCard
+export default ColorCard

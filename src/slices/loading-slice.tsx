@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit"
 
 interface LoadingSlice {
 	isLoading: boolean
+	loadingCount: number
 }
 
 const initialState: LoadingSlice = {
 	isLoading: false,
+	loadingCount: 0,
 }
 
 const loadingSlice = createSlice({
@@ -14,9 +16,11 @@ const loadingSlice = createSlice({
 	reducers: {
 		startLoading(state) {
 			state.isLoading = true
+			state.loadingCount++
 		},
 		stopLoading(state) {
 			state.isLoading = false
+			state.loadingCount--
 		},
 	},
 })

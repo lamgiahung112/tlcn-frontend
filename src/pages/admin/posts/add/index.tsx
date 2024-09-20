@@ -2,7 +2,7 @@ import addPost from "@/api/posts/addPost"
 import ResourcePicker from "@/components/admin/resource-picker"
 import IconChevronLeft from "@/components/common/icons/IconChevronLeft"
 import { Db } from "@/custom"
-import useData from "@/hooks/common/useData"
+import useApi from "@/hooks/common/useApi"
 import { useState, useRef } from "react"
 import ReactMarkdown from "react-markdown"
 import { Link, useNavigate } from "react-router-dom"
@@ -15,7 +15,7 @@ function AddPostPage() {
 	const [isResourcePickerOpen, setIsResourcePickerOpen] = useState(false)
 	const [isThumbnailPickerOpen, setIsThumbnailPickerOpen] = useState(false)
 	const [thumbnail, setThumbnail] = useState<Db.Resource | null>(null)
-	const { fetch: add } = useData(addPost)
+	const { fetch: add } = useApi(addPost)
 
 	const handleSave = () => {
 		if (!title || !content || !thumbnail) {

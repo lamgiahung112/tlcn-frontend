@@ -3,8 +3,8 @@ import updatePost from "@/api/posts/updatePost"
 import ResourcePicker from "@/components/admin/resource-picker"
 import IconChevronLeft from "@/components/common/icons/IconChevronLeft"
 import { Db } from "@/custom"
-import useData from "@/hooks/common/useData"
-import { useState, useEffect } from "react"
+import useApi from "@/hooks/common/useApi"
+import { useState, useEffect, useRef } from "react"
 import ReactMarkdown from "react-markdown"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
@@ -12,9 +12,11 @@ function EditPostPage() {
 	const { "post-id": postId } = useParams()
 	const navigate = useNavigate()
 	const [post, setPost] = useState<Db.Response.PostDetail | null>(null)
-	const { data: fetchedPost, fetch: fetchPost } = useData(getPostDetail)
-	const { fetch: updatePostDetail } = useData(updatePost)
+	const { data: fetchedPost, fetch: fetchPost } = useApi(getPostDetail)
+	const { fetch: updatePostDetail } = useApi(updatePost)
 	const [isThumbnailPickerOpen, setIsThumbnailPickerOpen] = useState(false)
+	const [isResourcePickerOpen, setIsResourcePickerOpen] = useState(false)
+	const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
 	useEffect(() => {
 		fetchPost({ id: postId! })
@@ -30,6 +32,28 @@ function EditPostPage() {
 		})
 	}
 
+	const handleAddResource = (resource: Db.Resource) => {
+		const textarea = textareaRef.current
+		if (!textarea) return
+
+		const resourceMarkdown = `\n![${resource.name}](${resource.url})`
+
+		const { selectionStart, selectionEnd } = textarea
+		const newContent =
+			post!.content.substring(0, selectionStart) +
+			resourceMarkdown +
+			post!.content.substring(selectionEnd)
+
+		setPost({ ...post!, content: newContent })
+
+		// Set cursor position after the inserted markdown
+		setTimeout(() => {
+			textarea.focus()
+			const newCursorPosition = selectionStart + resourceMarkdown.length
+			textarea.setSelectionRange(newCursorPosition, newCursorPosition)
+		}, 0)
+	}
+
 	const handleAddThumbnail = (resource: Db.Resource) => {
 		setPost({ ...post!, thumbnail: resource, thumbnail_resource_id: resource.id })
 	}
@@ -39,6 +63,14 @@ function EditPostPage() {
 	}
 	return (
 		<div className="flex flex-col gap-y-4 px-4 py-6 w-full h-minus-header overflow-auto">
+			{isResourcePickerOpen && (
+				<ResourcePicker
+					onClose={() => {
+						setIsResourcePickerOpen(false)
+					}}
+					onSelect={handleAddResource}
+				/>
+			)}
 			<div className="flex items-center gap-x-4 mb-4">
 				<Link to="/admin/posts">
 					<IconChevronLeft />
@@ -77,10 +109,20 @@ function EditPostPage() {
 					/>
 				)}
 			</div>
+
 			<div className="flex gap-x-4">
 				<div className="w-1/2">
-					<h2 className="text-xl font-semibold mb-2">Raw Markdown</h2>
+					<div className="flex gap-x-4 items-center">
+						<h2 className="text-xl font-semibold mb-2">Raw Markdown</h2>
+						<button
+							onClick={() => setIsResourcePickerOpen(true)}
+							className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm"
+						>
+							Add Resource
+						</button>
+					</div>
 					<textarea
+						ref={textareaRef}
 						className="w-full h-[calc(100vh-200px)] p-4 border rounded-md"
 						value={post.content}
 						onChange={(e) => setPost({ ...post, content: e.target.value })}

@@ -1,12 +1,12 @@
 import getPostList from "@/api/posts/getPostList"
 import PostItem from "@/components/common/post-item"
-import useData from "@/hooks/common/useData"
+import useApi from "@/hooks/common/useApi"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 function PostsPage() {
 	const navigate = useNavigate()
-	const { data: posts, fetch: fetchPosts } = useData(getPostList, [])
+	const { data: posts, fetch: fetchPosts } = useApi(getPostList, [])
 
 	useEffect(() => {
 		fetchPosts(undefined)

@@ -1,16 +1,24 @@
 import getMediaResourceList from "@/api/admin/media-resource/getMediaResourceList"
 import { Db } from "@/custom"
-import useData from "@/hooks/common/useData"
+import useApi from "@/hooks/common/useApi"
 import React, { useState, useEffect } from "react"
 
 interface ResourcePickerProps {
+	isMultiple?: boolean
 	onClose: () => void
-	onSelect: (resource: Db.Resource) => void
+	onSelect?: (resource: Db.Resource) => void
+	onSelectMultiple?: (resources: Db.Resource[]) => void
 }
 
-const ResourcePicker: React.FC<ResourcePickerProps> = ({ onClose, onSelect }) => {
+const ResourcePicker: React.FC<ResourcePickerProps> = ({
+	isMultiple = false,
+	onClose,
+	onSelect,
+	onSelectMultiple,
+}) => {
 	const [filter, setFilter] = useState("")
-	const { data, fetch } = useData(getMediaResourceList)
+	const [selectedResources, setSelectedResources] = useState<Db.Resource[]>([])
+	const { data, fetch } = useApi(getMediaResourceList)
 
 	useEffect(() => {
 		fetch({
@@ -22,6 +30,29 @@ const ResourcePicker: React.FC<ResourcePickerProps> = ({ onClose, onSelect }) =>
 			},
 		})
 	}, [filter])
+
+	const handleResourceClick = (resource: Db.Resource) => {
+		if (isMultiple) {
+			const isSelected = selectedResources.some((r) => r.id === resource.id)
+			if (isSelected) {
+				setSelectedResources(
+					selectedResources.filter((r) => r.id !== resource.id)
+				)
+			} else {
+				setSelectedResources([...selectedResources, resource])
+			}
+		} else {
+			onSelect?.call(null, resource)
+			onClose()
+		}
+	}
+
+	const handleConfirm = () => {
+		if (isMultiple && onSelectMultiple) {
+			onSelectMultiple(selectedResources)
+			onClose()
+		}
+	}
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
@@ -62,11 +93,15 @@ const ResourcePicker: React.FC<ResourcePickerProps> = ({ onClose, onSelect }) =>
 							data.map((resource) => (
 								<div
 									key={resource.id}
-									className="border rounded-md p-2 cursor-pointer hover:bg-gray-100"
-									onClick={() => {
-										onSelect(resource)
-										onClose()
-									}}
+									className={`border rounded-md p-2 cursor-pointer hover:bg-gray-100 ${
+										isMultiple &&
+										selectedResources.some(
+											(r) => r.id === resource.id
+										)
+											? "border-primary-dark bg-primary-light"
+											: ""
+									}`}
+									onClick={() => handleResourceClick(resource)}
 								>
 									<img
 										src={resource.url}
@@ -82,6 +117,16 @@ const ResourcePicker: React.FC<ResourcePickerProps> = ({ onClose, onSelect }) =>
 								</div>
 							))}
 					</div>
+					{isMultiple && (
+						<div className="mt-4 flex justify-end">
+							<button
+								onClick={handleConfirm}
+								className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
+							>
+								Confirm Selection ({selectedResources.length})
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

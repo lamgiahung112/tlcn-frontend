@@ -1,6 +1,6 @@
 import addResource from "@/api/admin/media-resource/addResource"
 import updateResource from "@/api/admin/media-resource/updateResource"
-import useData from "@/hooks/common/useData"
+import useApi from "@/hooks/common/useApi"
 import { Db } from "@/custom"
 import { useRef, useState } from "react"
 import deleteResource from "@/api/admin/media-resource/deleteResource"
@@ -19,7 +19,7 @@ function AddMediaPopup({ onClose }: AddMediaPopupProps) {
 	const [name, setName] = useState("")
 	const [uploadImg, setUploadImg] = useState<Blob | null>(null)
 	const inputRef = useRef<HTMLInputElement | null>(null)
-	const { fetch: add, error: addErrors } = useData(addResource)
+	const { fetch: add, error: addErrors } = useApi(addResource)
 
 	return (
 		<PopupWrapper onClose={onClose} title="Add Resource">
@@ -91,8 +91,8 @@ function AddMediaPopup({ onClose }: AddMediaPopupProps) {
 
 function UpdateMediaPopup({ onClose, resource }: UpdateMediaPopupProps) {
 	const [name, setName] = useState(resource.name)
-	const { fetch: update, error: updateErrors } = useData(updateResource)
-	const { fetch: remove } = useData(deleteResource)
+	const { fetch: update, error: updateErrors } = useApi(updateResource)
+	const { fetch: remove } = useApi(deleteResource)
 
 	return (
 		<PopupWrapper onClose={onClose} title="Update Resource">

@@ -4,7 +4,7 @@ import { AppDispatch } from "@/store"
 import { startLoading, stopLoading } from "@/slices/loading-slice"
 import { AxiosError } from "axios"
 
-function useData<T, P = undefined>(
+function useApi<T, P = undefined>(
 	fetcherFunc: (params: P) => Promise<T>,
 	defaultValue?: T
 ) {
@@ -47,4 +47,4 @@ function useData<T, P = undefined>(
 	}
 }
 
-export default useData
+export default useApi
