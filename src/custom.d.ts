@@ -1,76 +1,127 @@
 namespace Db {
-	export type Category = "STROKE" | "SCOOTER" | "HEAVY"
-
-	export interface Resource {
-		id: string
-		url: string
-		name: string
-		created_at: string
+	enum Category {
+	  SCOOTER = 'SCOOTER',
+	  HEAVY = 'HEAVY',
+	  STROKE = 'STROKE'
+	}
+  
+	enum OrderStatus {
+	  CREATED = 'CREATED',
+	  CANCELLED = 'CANCELLED',
+	  CONFIRMED = 'CONFIRMED',
+	  DELIVERY_STARTED = 'DELIVERY_STARTED',
+	  COMPLETED = 'COMPLETED'
+	}
+  
+	interface ImageResource {
+	  id: number;
+	  filename: string;
+	  s3Key: string;
+	  createdAt: Date;
+	}
+  
+	interface GenericMotorbike {
+	  id: number;
+	  category: Category;
+	  model: string;
+	  name: string;
+	  recommendedPrice: number;
+	  description?: string;
+	  colorInHex?: string;
+	  colorName?: string;
+	  engineSpecs?: Record<string, any>;
+	  chassisSpecs?: Record<string, any>;
+	  warrantySpecs?: Record<string, any>;
+	  isAvailable: boolean;
+	  createdAt: Date;
+	  updatedAt: Date;
+	  images: GenericMotorbikeImage[];
+	  details: GenericMotorbikeDetail[];
+	}
+  
+	interface GenericMotorbikeImage {
+	  id: number;
+	  genericMotorbikeId: number;
+	  imageResourceId: number;
+	  isGallery: boolean;
+	  createdAt: Date;
+	  imageResource: ImageResource
+	}
+  
+	interface GenericMotorbikeDetail {
+	  id: number;
+	  genericMotorbikeId: number;
+	  imageResourceId: number;
+	  title: string;
+	  excerpt?: string;
+	  createdAt: Date;
+	  imageResource: ImageResource
+	}
+  
+	interface Motorbike {
+	  id: number;
+	  genericMotorbikeId: number;
+	  chassisCode?: string;
+	  engineCode?: string;
+	  price: number;
+	  arrivedToInventoryAt?: Date;
+	  isSold: boolean;
+	  createdAt: Date;
+	  updatedAt: Date;
+	}
+  
+	interface Order {
+	  id: number;
+	  publicOrderId: string;
+	  status: OrderStatus;
+	  total: number;
+	  cancelReason?: string;
+	  createdAt: Date;
+	  confirmedAt?: Date;
+	  startedDeliveryAt?: Date;
+	  completedAt?: Date;
+	  cancelledAt?: Date;
+	  customerName: string;
+	  customerPhone: string;
+	  customerAddress: string;
+	  customerEmail: string;
+	  orderItems: OrderItem[];
+	}
+  
+	interface Charge {
+	  id: number;
+	  transaction_id: string;
+	  orderId: number;
+	  amount: number;
+	  createdAt: Date;
+	}
+  
+	interface OrderItem {
+	  id: number;
+	  orderId: number;
+	  motorbikeId: number;
+	  quantity: number;
+	  createdAt: Date;
+	}
+  
+	interface User {
+	  id: number;
+	  username: string;
+	  passwordHash: string;
+	  isAdmin: boolean;
+	  createdAt: Date;
+	  updatedAt: Date;
 	}
 
-	export interface Model {
-		id: string
-		name: string
-		description: string
+	interface Paginated<T> {
+		items: T[]
+		meta: {
+			total: number
+			page: number
+			perPage: number
+			totalPages: number
+		}
 	}
-
-	export interface MotorbikeDetails {
-		id: string
-		title: string
-		detail: string
-		resource_id: string | null
-		motorbike_id: string
-	}
-
-	export interface MotorBikePictures {
-		resource_id: string
-		motorbike_id: string
-	}
-
-	export interface Motorbike {
-		id: string
-		name: string
-		category: Category
-		model_id: string
-		recommended_price: number
-		description: string
-		engineSpecs: Record<string, any>
-		chassisSpecs: Record<string, any>
-		sizeSpecs: Record<string, any>
-		warrantySpecs: Record<string, any>
-	}
-
-	export interface MotorbikeVariant {
-		id: string
-		motorbike_id: string
-		color_id: string
-	}
-
-	export interface Color {
-		id: string
-		name: string
-		hex: string
-	}
-
-	export interface VariantDisplayPicture {
-		resource_id: string
-		variant_id: string
-	}
-
-	export interface Post {
-		id: string
-		title: string
-		thumbnail_resource_id: string
-		content: string
-		created_at: string
-		modified_at: string
-		views: number
-	}
-
-	export namespace Response {
-		export type PostItem = Omit<Post, "content"> & { thumbnail: Resource }
-		export type PostDetail = Post & { thumbnail: Resource }
-	}
-}
-
-export type { Db }
+  }
+  
+  export type { Db };

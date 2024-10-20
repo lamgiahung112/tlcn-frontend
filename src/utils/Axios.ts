@@ -7,37 +7,37 @@ const instance = axios.create({
 export class Axios {
 	static async get<T, P = any>(url: string, params?: P) {
 		return instance
-			.get<{ data: T }>(url, {
+			.get<T>(url, {
 				params,
 				headers: {
 					"x-session-id": localStorage.getItem("__session__"),
 				},
 			})
-			.then((res) => res.data.data)
+			.then((res) => res.data)
 	}
 
 	static post<T, B>(url: string, data: B) {
 		return instance
-			.post<{ data: T }>(url, data, {
+			.post<T>(url, data, {
 				headers: {
 					"x-session-id": localStorage.getItem("__session__"),
 				},
 			})
-			.then((res) => res.data.data)
+			.then((res) => res.data)
 	}
 
 	static put<T, B>(url: string, data: B) {
 		return instance
-			.put<{ data: T }>(url, data, {
+			.put<T>(url, data, {
 				headers: {
 					"x-session-id": localStorage.getItem("__session__"),
 				},
 			})
-			.then((res) => res.data.data)
+			.then((res) => res.data)
 	}
 
 	static delete<T>(url: string) {
-		return instance.delete<{ data: T }>(url, {
+		return instance.delete<T>(url, {
 			headers: {
 				"x-session-id": localStorage.getItem("__session__"),
 			},
