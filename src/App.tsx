@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import AdminPage from "./pages/admin"
 import LoginPage from "./pages/admin/login"
 import AdminGenericMotorbikePage from "./pages/admin/generic_motorbike"
+import AdminImageResourcesPage from "./pages/admin/image_resources"
 
 const router = createBrowserRouter([
 	{
@@ -25,6 +26,14 @@ const router = createBrowserRouter([
 		element: (
 			<AdminPage>
 				<AdminGenericMotorbikePage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/image_resources",
+		element: (
+			<AdminPage>
+				<AdminImageResourcesPage />
 			</AdminPage>
 		),
 	},

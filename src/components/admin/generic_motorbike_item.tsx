@@ -1,18 +1,20 @@
+import { GenericMotorbike } from '@/custom';
+import { _imgLink } from '@/utils/img-link';
 import React from 'react';
-import { Db } from '@/custom';
 import { Link } from 'react-router-dom';
 
 interface GenericMotorbikeItemProps {
-  item: Db.GenericMotorbike;
+  item: GenericMotorbike;
 }
 
-const GenericMotorbike: React.FC<GenericMotorbikeItemProps> = ({ item }) => {
+const GenericMotorbikeItem: React.FC<GenericMotorbikeItemProps> = ({ item }) => {
+  console.log(item)
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg">
       <div className="relative h-48">
-        {item.images[0] && (
+        {item.images && item.images[0] && (
           <img
-            src={`/api/images/${item.images[0].imageResource.s3Key}`}
+            src={_imgLink(item.images[0].imageResource.s3Key)}
             alt={item.name}
             className="w-full h-full object-cover"
           />
@@ -31,4 +33,4 @@ const GenericMotorbike: React.FC<GenericMotorbikeItemProps> = ({ item }) => {
   );
 };
 
-export default GenericMotorbike;
+export default GenericMotorbikeItem;

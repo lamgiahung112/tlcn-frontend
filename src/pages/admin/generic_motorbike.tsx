@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useGenericMotorbike from '@/hooks/zustand/useGenericMotorbike';
 import GenericMotorbikeItem from '@/components/admin/generic_motorbike_item';
-import { Db } from '@/custom';
+import { GenericMotorbikeAddPopup } from '@/components/admin';
+import { Category } from '@/custom';
 
 const AdminGenericMotorbikesPage: React.FC = () => {
   const {
     items,
     isLoading,
     page,
-	total,
-	totalPages,
+	  total,
+	  totalPages,
     perPage,
     paginate,
     setPage,
@@ -19,6 +20,7 @@ const AdminGenericMotorbikesPage: React.FC = () => {
     setMinPrice,
     setMaxPrice,
   } = useGenericMotorbike();
+  const [isAddPopupOpen, setAddPopupOpen] = useState(false)
 
   useEffect(() => {
     paginate();
@@ -37,7 +39,8 @@ const AdminGenericMotorbikesPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Generic Motorbikes</h1>
-
+      {isAddPopupOpen ? <GenericMotorbikeAddPopup onClose={() => setAddPopupOpen(false)} /> : null}
+      <button onClick={() => setAddPopupOpen(true)}>Test</button>
       <form onSubmit={handleSearch} className="mb-6">
         <div className="flex space-x-4">
           <input
@@ -47,7 +50,7 @@ const AdminGenericMotorbikesPage: React.FC = () => {
             className="border p-2 rounded"
           />
           <select
-            onChange={(e) => setCategory(e.target.value as Db.Category)}
+            onChange={(e) => setCategory(e.target.value as Category)}
             className="border p-2 rounded"
           >
             <option value="">All Categories</option>

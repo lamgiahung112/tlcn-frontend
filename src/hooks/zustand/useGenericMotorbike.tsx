@@ -1,28 +1,35 @@
-import { apiFilterGenericMotorbike } from "@/apis"
-import { Db } from "@/custom"
+import {
+	apiCreateGenericMotorbike,
+	apiFilterGenericMotorbike,
+	apiFindGenericMotorbikeById,
+	UpsertGenericMotorbikeDto,
+} from "@/apis"
+import { Category, GenericMotorbike, Motorbike } from "@/custom"
 import { create } from "zustand"
 
 type UseGenericMotorbikeState = {
 	page: number
 	perPage: number
-    total: number
-    totalPages: number
+	total: number
+	totalPages: number
 	name?: string
-	category?: Db.Category
+	category?: Category
 	minPrice?: number
 	maxPrice?: number
 	isLoading: boolean
-	items: Db.GenericMotorbike[]
-	motorbikes: Db.Motorbike[]
+	items: GenericMotorbike[]
+	motorbikes: Motorbike[]
+	currentGenericMotorbike?: GenericMotorbike
 }
 
 type UseGenericMotorbikeAction = {
 	paginate: () => Promise<void>
-	findMotorbikes: (genericMotorbikeId: number) => Promise<void>
+	fetchGenericMotorbike: (id: number) => Promise<void>
+	create: (data: UpsertGenericMotorbikeDto) => Promise<void>
 	setPage: (page: number) => void
 	setPerPage: (perPage: number) => void
 	setName: (name: string) => void
-	setCategory: (cat: Db.Category) => void
+	setCategory: (cat: Category) => void
 	setMinPrice: (price: number) => void
 	setMaxPrice: (price: number) => void
 }
@@ -33,11 +40,14 @@ const useGenericMotorbike = create<UseGenericMotorbikeState & UseGenericMotorbik
 			isLoading: false,
 			page: 1,
 			perPage: 10,
-            total: 0,
-            totalPages: 0,
+			total: 0,
+			totalPages: 0,
 			items: [],
 			motorbikes: [],
-			async findMotorbikes(genericMotorbikeId) {},
+			async fetchGenericMotorbike(id) {
+				const result = await apiFindGenericMotorbikeById(id)
+				set((state) => ({ ...state, currentGenericMotorbike: result }))
+			},
 			async paginate() {
 				set((state) => ({ ...state, isLoading: true }))
 				const { page, perPage, name, category, minPrice, maxPrice } = get()
@@ -49,7 +59,18 @@ const useGenericMotorbike = create<UseGenericMotorbikeState & UseGenericMotorbik
 					minPrice,
 					maxPrice,
 				})
-				set((state) => ({ ...state, isLoading: false, items: result.items, total: result.meta.total, totalPages: result.meta.totalPages }))
+				set((state) => ({
+					...state,
+					isLoading: false,
+					items: result.items,
+					total: result.meta.total,
+					totalPages: result.meta.totalPages,
+				}))
+			},
+			async create(data) {
+				set((state) => ({ ...state, isLoading: true }))
+				await apiCreateGenericMotorbike(data)
+				set((state) => ({ ...state, isLoading: false }))
 			},
 			setCategory(cat) {
 				set((state) => ({ ...state, category: cat }))
