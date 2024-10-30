@@ -2,6 +2,7 @@ import {
 	apiCreateGenericMotorbike,
 	apiFilterGenericMotorbike,
 	apiFindGenericMotorbikeById,
+	apiImportMotorbikeData,
 	apiUpdateGenericMotorbike,
 	UpsertGenericMotorbikeDto,
 } from "@/apis"
@@ -25,6 +26,7 @@ type UseGenericMotorbikeState = {
 type UseGenericMotorbikeAction = {
 	paginate: () => Promise<void>
 	fetchGenericMotorbike: (id: number) => Promise<void>
+	importMotorbikeData: (file: Blob) => Promise<void>
 	updateGenericMotorbike: (id: number, data: UpsertGenericMotorbikeDto) => Promise<void>
 	create: (data: UpsertGenericMotorbikeDto) => Promise<void>
 	setPage: (page: number) => void
@@ -46,6 +48,10 @@ const useGenericMotorbike = create<UseGenericMotorbikeState & UseGenericMotorbik
 			items: [],
 			motorbikes: [],
 			currentGenericMotorbike: undefined,
+			async importMotorbikeData(file) {
+				const result = await apiImportMotorbikeData(get().currentGenericMotorbike?.id ?? -1, file)
+				set((state) => ({ ...state, motorbikes: result }))
+			},
 			async updateGenericMotorbike(id, data) {
 				await apiUpdateGenericMotorbike(id, data)
 			},

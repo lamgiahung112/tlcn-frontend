@@ -10,6 +10,8 @@ export type UpsertGenericMotorbikeDto = {
 	category: Category
 	model: string
 	name: string
+	colorInHex: string
+	colorName: string
 	recommendedPrice: number
 	description: string
 	engineSpecs: Record<string, string>
@@ -45,4 +47,10 @@ export function apiFilterGenericMotorbike(data: FilterGenericItemDto) {
 
 export function apiFindGenericMotorbikeById(id: number) {
 	return Axios.get<GenericMotorbike>(`/generic_motorbikes/${id}`)
+}
+
+export function apiImportMotorbikeData(genericMotorbikeId: number, file: Blob) {
+	const formData = new FormData()
+	formData.append("file", file)
+	return Axios.post(`/motorbikes/import_from_csv?genericMotorbikeId=${genericMotorbikeId}`, formData)
 }

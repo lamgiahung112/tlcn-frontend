@@ -8,7 +8,7 @@ import { FaChevronLeft } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 function AdminGenericMotorbikeDetailPage() {
-	const { currentGenericMotorbike, fetchGenericMotorbike, updateGenericMotorbike } = useGenericMotorbike()
+	const { currentGenericMotorbike, fetchGenericMotorbike, updateGenericMotorbike, importMotorbikeData } = useGenericMotorbike()
 	const { id } = useParams()
     const navigate = useNavigate()
 
@@ -67,6 +67,8 @@ function AdminGenericMotorbikeDetailPage() {
             description: formData.description!,
             model: formData.model!,
             name: formData.name!,
+            colorInHex: formData.colorInHex!,
+            colorName: formData.colorName!,
             recommendedPrice: formData.recommendedPrice!,
             engineSpecs, 
             chassisSpecs, 
@@ -485,8 +487,64 @@ function AdminGenericMotorbikeDetailPage() {
                     </button>
                 </div>
 			</form>
-            <div className="mt-6">
-                <h1 className="text-2xl font-bold">Motorbikes</h1>
+            <div className="mt-6 flex flex-col gap-y-4">
+                <div className="flex gap-4">
+                    <h1 className="text-2xl font-bold">Motorbikes</h1>
+                    <label htmlFor="import-motorbike-data" className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Import Motorbike Data
+                    </label>
+                    <input hidden id="import-motorbike-data" type="file" onChange={(e) => {
+                        if (e.target.files) {
+                            importMotorbikeData(e.target.files[0])
+                        }
+                    }} />
+                </div>
+                <div className="flex flex-col w-full">
+                    <div className="w-full overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chassis Code</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Engine Code</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arrived At</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                                    <th className="bg-gray-50 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {currentGenericMotorbike?.motorbikes?.map((bike) => (
+                                    <tr key={bike.id}>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bike.id}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bike.chassisCode}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bike.engineCode}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bike.price}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {bike.arrivedToInventoryAt ? new Date(bike.arrivedToInventoryAt).toLocaleDateString() : '-'}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                                bike.isSold 
+                                                    ? 'bg-red-100 text-red-800' 
+                                                    : 'bg-green-100 text-green-800'
+                                            }`}>
+                                                {bike.isSold ? 'Sold' : 'Available'}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {new Date(bike.createdAt).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button className="text-indigo-600 hover:text-indigo-900">Edit</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 		</div>
 	)
