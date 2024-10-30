@@ -35,6 +35,7 @@ interface GenericMotorbike {
 	createdAt: Date
 	updatedAt: Date
 	images: GenericMotorbikeImage[]
+	motorbikes?: Motorbike[]
 }
 
 interface GenericMotorbikeImage {

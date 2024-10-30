@@ -25,7 +25,7 @@ const GenericMotorbikeItem: React.FC<GenericMotorbikeItemProps> = ({ item }) => 
         <p className="text-gray-600 mb-2">{item.model}</p>
         <p className="text-green-600 font-bold mb-2">${item.recommendedPrice.toLocaleString()}</p>
         <p className="text-sm text-gray-500 mb-4">{item.category}</p>
-        <Link to={`/generic-motorbikes/${item.id}`} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+        <Link to={`/admin/generic_motorbikes/${item.id}`} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
           View Details
         </Link>
       </div>

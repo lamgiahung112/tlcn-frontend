@@ -3,6 +3,7 @@ import AdminPage from "./pages/admin"
 import LoginPage from "./pages/admin/login"
 import AdminGenericMotorbikePage from "./pages/admin/generic_motorbike"
 import AdminImageResourcesPage from "./pages/admin/image_resources"
+import AdminGenericMotorbikeDetailPage from "./pages/admin/generic_motorbike_detail"
 
 const router = createBrowserRouter([
 	{
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
 		element: (
 			<AdminPage>
 				<AdminImageResourcesPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/generic_motorbikes/:id",
+		element: (
+			<AdminPage>
+				<AdminGenericMotorbikeDetailPage />
 			</AdminPage>
 		),
 	},

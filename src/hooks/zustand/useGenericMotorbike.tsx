@@ -2,9 +2,10 @@ import {
 	apiCreateGenericMotorbike,
 	apiFilterGenericMotorbike,
 	apiFindGenericMotorbikeById,
+	apiUpdateGenericMotorbike,
 	UpsertGenericMotorbikeDto,
 } from "@/apis"
-import { Category, GenericMotorbike, Motorbike } from "@/custom"
+import { Category, GenericMotorbike } from "@/custom"
 import { create } from "zustand"
 
 type UseGenericMotorbikeState = {
@@ -18,13 +19,13 @@ type UseGenericMotorbikeState = {
 	maxPrice?: number
 	isLoading: boolean
 	items: GenericMotorbike[]
-	motorbikes: Motorbike[]
 	currentGenericMotorbike?: GenericMotorbike
 }
 
 type UseGenericMotorbikeAction = {
 	paginate: () => Promise<void>
 	fetchGenericMotorbike: (id: number) => Promise<void>
+	updateGenericMotorbike: (id: number, data: UpsertGenericMotorbikeDto) => Promise<void>
 	create: (data: UpsertGenericMotorbikeDto) => Promise<void>
 	setPage: (page: number) => void
 	setPerPage: (perPage: number) => void
@@ -44,6 +45,10 @@ const useGenericMotorbike = create<UseGenericMotorbikeState & UseGenericMotorbik
 			totalPages: 0,
 			items: [],
 			motorbikes: [],
+			currentGenericMotorbike: undefined,
+			async updateGenericMotorbike(id, data) {
+				await apiUpdateGenericMotorbike(id, data)
+			},
 			async fetchGenericMotorbike(id) {
 				const result = await apiFindGenericMotorbikeById(id)
 				set((state) => ({ ...state, currentGenericMotorbike: result }))
