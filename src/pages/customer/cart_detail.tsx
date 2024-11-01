@@ -1,11 +1,13 @@
 import { CartItem } from "@/components/customer"
 import useCart from "@/hooks/zustand/useCart"
+import { useOrder } from "@/hooks/zustand/useOrder"
 import { _currency } from "@/utils/format"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 function CartDetailPage() {
-    const { cart, cartDetail, fetchCartDetail, totalPrice } = useCart()
+    const { cart, cartDetail, fetchCartDetail, totalPrice, clearCart } = useCart()
+    const navigate = useNavigate()
     const [paymentDetails, setPaymentDetails] = useState({
         cardNumber: '',
         cvv: '',
@@ -17,10 +19,24 @@ function CartDetailPage() {
         customerAddress: '',
         customerEmail: ''
     })
+    const { createOrder } = useOrder()
 
     useEffect(() => {
         fetchCartDetail()
     }, [JSON.stringify(cart)])
+
+    const onSubmit = async () => {
+        const order = await createOrder({
+            cart,
+            customer: customerData,
+            paymentMethodId: paymentDetails.cardNumber === '4444' ? 'invalid' : '1'
+        })
+        if (!order) {
+            return
+        }
+        clearCart()
+        navigate(`/orders/${order.publicOrderId}`)
+    }
 
     const handleCustomerDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -179,7 +195,7 @@ function CartDetailPage() {
                             <span className="text-lg">Total</span>
                             <span className="text-2xl font-bold">{_currency(totalPrice)}</span>
                         </div>
-                        <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
+                        <button onClick={onSubmit} className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
                             Buy Now
                         </button>
                     </div>

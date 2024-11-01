@@ -8,6 +8,8 @@ import MotorbikeListPage from "./pages/customer/motorbike_list"
 import CustomerPage from "./pages/customer"
 import MotorbikeDetailPage from "./pages/customer/motorbike_detail"
 import CartDetailPage from "./pages/customer/cart_detail"
+import ViewOrderPage from "./pages/customer/view_order"
+import AdminOrderPage from "./pages/admin/orders"
 
 const router = createBrowserRouter([
 	{
@@ -16,15 +18,43 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/motorbikes",
-		element: <CustomerPage><MotorbikeListPage /></CustomerPage>,
+		element: (
+			<CustomerPage>
+				<MotorbikeListPage />
+			</CustomerPage>
+		),
 	},
 	{
 		path: "/motorbikes/:id",
-		element: <CustomerPage><MotorbikeDetailPage /></CustomerPage>,
+		element: (
+			<CustomerPage>
+				<MotorbikeDetailPage />
+			</CustomerPage>
+		),
 	},
 	{
 		path: "/cart",
-		element: <CustomerPage><CartDetailPage /></CustomerPage>,
+		element: (
+			<CustomerPage>
+				<CartDetailPage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/orders/:orderPublicId",
+		element: (
+			<CustomerPage>
+				<ViewOrderPage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/orders",
+		element: (
+			<CustomerPage>
+				<ViewOrderPage />
+			</CustomerPage>
+		),
 	},
 	{
 		path: "/admin",
@@ -59,6 +89,14 @@ const router = createBrowserRouter([
 		element: (
 			<AdminPage>
 				<AdminGenericMotorbikeDetailPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/orders",
+		element: (
+			<AdminPage>
+				<AdminOrderPage />
 			</AdminPage>
 		),
 	},

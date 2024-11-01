@@ -21,6 +21,7 @@ interface CartActions {
     removeFromCartDetail: (genericMotorbikeId: number) => Promise<void>;
     updateCart: (genericMotorbikeId: number, quantity: number) => void;
     removeFromCart: (motorbikeId: number) => void;
+    clearCart: () => void;
 }
 
 const useCart = create<CartState & CartActions>((set, get) => ({
@@ -29,6 +30,10 @@ const useCart = create<CartState & CartActions>((set, get) => ({
     maxQuantity: {},
     errors: {},
     cartDetail: [],
+    clearCart() {
+        set({ cart: [], cartDetail: [] })
+        localStorage.setItem('cart', '[]')
+    },
     async removeFromCartDetail(genericMotorbikeId) {
         get().removeFromCart(genericMotorbikeId)
         await get().fetchCartDetail()

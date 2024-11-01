@@ -76,6 +76,7 @@ interface Order {
 	customerEmail: string
 	orderItems: OrderItem[]
 	orderCartItems: OrderCartItem[]
+	charge: Charge
 }
 
 interface Charge {
@@ -84,12 +85,14 @@ interface Charge {
 	orderId: number
 	amount: number
 	createdAt: Date
+	order: Order
 }
 
 interface OrderItem {
 	id: number
 	orderId: number
 	motorbikeId: number
+	motorbike: Motorbike
 	createdAt: Date
 }
 
@@ -99,6 +102,7 @@ interface OrderCartItem {
 	genericMotorbikeId: number
 	quantity: number
 	createdAt: Date
+	genericMotorbike: GenericMotorbike
 }
 
 interface Paginated<T> {
@@ -129,6 +133,7 @@ export type {
 	Motorbike,
 	Order,
 	OrderItem,
+	OrderCartItem,
 	Paginated,
 	GenericMotorbikeImage,
 	ImageResource,
