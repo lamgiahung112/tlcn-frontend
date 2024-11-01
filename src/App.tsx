@@ -10,6 +10,7 @@ import MotorbikeDetailPage from "./pages/customer/motorbike_detail"
 import CartDetailPage from "./pages/customer/cart_detail"
 import ViewOrderPage from "./pages/customer/view_order"
 import AdminOrderPage from "./pages/admin/orders"
+import AdminOrderDetailPage from "./pages/admin/order_detail"
 
 const router = createBrowserRouter([
 	{
@@ -97,6 +98,14 @@ const router = createBrowserRouter([
 		element: (
 			<AdminPage>
 				<AdminOrderPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/orders/:orderPublicId",
+		element: (
+			<AdminPage>
+				<AdminOrderDetailPage />
 			</AdminPage>
 		),
 	},

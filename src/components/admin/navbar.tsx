@@ -23,7 +23,7 @@ function Navbar() {
 						<Link
 							to={item.path}
 							className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
-								location.pathname === item.path
+								location.pathname.startsWith(item.path)
 									? "bg-blue-600"
 									: "hover:bg-gray-700"
 							}`}

@@ -1,4 +1,4 @@
-import { apiCreateOrder, apiFilterOrders, apiGetOrder, CreateOrderDto, FilterOrderDto } from "@/apis/order";
+import { apiAdminCancelOrder, apiAdminCompleteOrder, apiAdminConfirmOrder, apiAdminGetOrder, apiAdminStartDelivery, apiCreateOrder, apiFilterOrders, apiGetOrder, CreateOrderDto } from "@/apis/order";
 import { Order, OrderStatus } from "@/custom";
 import { create } from "zustand";
 
@@ -17,8 +17,15 @@ interface OrderState {
 
 interface OrderActions {
     createOrder: (data: CreateOrderDto) => Promise<Order>
+    setFilter: (filter: Partial<OrderState["filter"]>) => void
+    setPage: (page: number) => void
     getOrder: (publicOrderId: string, email: string) => Promise<Order>
-    filterOrders: (data: FilterOrderDto) => Promise<void>
+    getAdminOrder: (publicOrderId: string) => Promise<Order>
+    paginate: () => Promise<void>
+    confirmOrder: (publicOrderId: string) => Promise<void>
+    startDelivery: (publicOrderId: string) => Promise<void>
+    completeOrder: (publicOrderId: string) => Promise<void>
+    cancelOrder: (publicOrderId: string, reason: string) => Promise<void>
 }
 
 export const useOrder = create<OrderState & OrderActions>()((set, get) => ({
@@ -32,8 +39,36 @@ export const useOrder = create<OrderState & OrderActions>()((set, get) => ({
     },
     currentOrder: undefined,
     orders: [],
-    async filterOrders(data) {
-        const result = await apiFilterOrders(data)
+    setFilter: (filter) => set({ filter: { ...get().filter, ...filter } }),
+    setPage: (page) => set({ page }),
+    async cancelOrder(publicOrderId, reason) {
+        await apiAdminCancelOrder(publicOrderId, reason)
+        await get().getAdminOrder(publicOrderId)
+    },
+    async confirmOrder(publicOrderId) {
+        await apiAdminConfirmOrder(publicOrderId)
+        await get().getAdminOrder(publicOrderId)
+    },
+    async startDelivery(publicOrderId) {
+        await apiAdminStartDelivery(publicOrderId)
+        await get().getAdminOrder(publicOrderId)
+    },
+    async completeOrder(publicOrderId) {
+        await apiAdminCompleteOrder(publicOrderId)
+        await get().getAdminOrder(publicOrderId)
+    },
+    async getAdminOrder(publicOrderId) {
+        const order = await apiAdminGetOrder(publicOrderId)
+        set({ currentOrder: order })
+        return order
+    },
+    async paginate() {
+        const result = await apiFilterOrders({
+            page: get().page,
+            perPage: get().perPage,
+            publicOrderId: get().filter.publicOrderId || undefined,
+            status: get().filter.status || undefined,
+        })
         set({ orders: result.items, total: result.meta.total, totalPages: result.meta.totalPages })
     },
     async createOrder(data) {

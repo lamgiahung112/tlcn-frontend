@@ -54,6 +54,60 @@ function OrderStatusProgress({ status }: { status: OrderStatus }) {
 	)
 }
 
+function OrderStatusHistory() {
+	const { currentOrder } = useOrder()
+
+	if (!currentOrder) {
+		return <></>
+	}
+	const statusEvents = [
+        {
+            status: 'Order Placed',
+            date: currentOrder.createdAt,
+            icon: '🛍️'
+        },
+        ...(currentOrder.confirmedAt ? [{
+            status: 'Order Confirmed',
+            date: currentOrder.confirmedAt,
+            icon: '✅'
+        }] : []),
+        ...(currentOrder.startedDeliveryAt ? [{
+            status: 'Delivery Started',
+            date: currentOrder.startedDeliveryAt,
+            icon: '🚚'
+        }] : []),
+        ...(currentOrder.completedAt ? [{
+            status: 'Order Completed',
+            date: currentOrder.completedAt,
+            icon: '🎉'
+        }] : []),
+        ...(currentOrder.cancelledAt ? [{
+            status: `Order Cancelled: ${currentOrder.cancelReason}`,
+            date: currentOrder.cancelledAt,
+            icon: '❌'
+        }] : [])
+    ].filter(event => event.date)
+
+    return (
+        <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Order Timeline</h3>
+            <div className="space-y-4">
+                {statusEvents.map((event, index) => (
+                    <div key={index} className="flex items-start">
+                        <div className="flex-shrink-0 w-8">{event.icon}</div>
+                        <div className="ml-4">
+                            <p className="font-medium text-gray-900">{event.status}</p>
+                            <p className="text-sm text-gray-500">
+                                {new Date(event.date).toLocaleString()}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )	
+}
+
 function CartItem({ items, cartItem }: { cartItem: OrderCartItem; items: OrderItem[] }) {
 	return (
 		<div className="flex items-center py-4 border-b">
@@ -160,6 +214,7 @@ function OrderDetail() {
 
 				{/* Progress Tracker */}
 				<OrderStatusProgress status={currentOrder.status} />
+				<OrderStatusHistory />
 
 				{/* Order Items */}
 				<div className="bg-white rounded-lg shadow p-6">

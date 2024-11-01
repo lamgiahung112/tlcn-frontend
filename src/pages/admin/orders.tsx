@@ -1,14 +1,25 @@
 import { OrderStatus } from "@/custom"
 import { useOrder } from "@/hooks/zustand/useOrder"
 import { _currency } from "@/utils/format"
-import { useState } from "react"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 function AdminOrdersPage() {
-	const orders = useOrder((state) => state.orders)
-	const [filters, setFilters] = useState({
-		orderId: "",
-		status: "",
-	})
+	const { orders, paginate, filter, setFilter, total, totalPages, page, perPage, setPage } = useOrder()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		paginate()
+	}, [])
+
+	useEffect(() => {
+		paginate()
+	}, [JSON.stringify(filter)])
+
+	const handlePageChange = (newPage: number) => {
+		setPage(newPage);
+		paginate();
+	};
 
 	return (
 		<div className="container px-4 w-full py-6 space-y-6">
@@ -19,13 +30,13 @@ function AdminOrdersPage() {
 				<input
 					type="text"
 					placeholder="Order ID"
-					value={filters.orderId}
-					onChange={(e) => setFilters({ ...filters, orderId: e.target.value })}
+					value={filter.publicOrderId}
+					onChange={(e) => setFilter({ ...filter, publicOrderId: e.target.value })}
 					className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 				/>
 				<select
-					value={filters.status}
-					onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+					value={filter.status}
+					onChange={(e) => setFilter({ ...filter, status: e.target.value as OrderStatus ?? undefined })}
 					className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 				>
 					<option value="">All Status</option>
@@ -67,7 +78,7 @@ function AdminOrdersPage() {
 					</thead>
 					<tbody className="bg-white divide-y divide-gray-200">
 						{orders?.map((order) => (
-							<tr key={order.id} className="hover:bg-gray-50">
+							<tr onClick={() => navigate(`/admin/orders/${order.publicOrderId}`)} key={order.id} className="hover:bg-gray-50 cursor-pointer">
 								<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
 									{order.id}
 								</td>
@@ -87,7 +98,7 @@ function AdminOrdersPage() {
 									{_currency(order.total)}
 								</td>
 								<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-									{new Date(order.createdAt).toISOString()}
+									{new Date(order.createdAt).toLocaleString()}
 								</td>
 								<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
 									{order.customerName}
@@ -99,6 +110,24 @@ function AdminOrdersPage() {
 						))}
 					</tbody>
 				</table>
+			</div>
+			<div className="mt-6 flex justify-between items-center">
+				<div>
+				Showing {(page - 1) * perPage + 1} - {Math.min(page * perPage, total)} of {total} items
+				</div>
+				<div className="space-x-2">
+				{Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+					<button
+					key={pageNum}
+					onClick={() => handlePageChange(pageNum)}
+					className={`px-3 py-1 rounded ${
+						pageNum === page ? 'bg-blue-500 text-white' : 'bg-gray-200'
+					}`}
+					>
+					{pageNum}
+					</button>
+				))}
+				</div>
 			</div>
 		</div>
 	)

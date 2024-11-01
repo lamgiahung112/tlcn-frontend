@@ -33,3 +33,24 @@ export async function apiFilterOrders(data: FilterOrderDto) {
 export async function apiGetOrder(publicOrderId: string, email: string) {
     return Axios.post<Order, { email: string }>(`/orders/${publicOrderId}`, { email })
 }
+
+export async function apiAdminGetOrder(publicOrderId: string) {
+    return Axios.get<Order>(`/orders/admin/${publicOrderId}`)
+}
+
+export async function apiAdminConfirmOrder(publicOrderId: string) {
+    return Axios.post(`/orders/admin/${publicOrderId}/confirm`, null)
+}
+
+export async function apiAdminStartDelivery(publicOrderId: string) {
+    return Axios.post(`/orders/admin/${publicOrderId}/start-delivery`, null)
+}
+
+export async function apiAdminCompleteOrder(publicOrderId: string) {
+    return Axios.post(`/orders/admin/${publicOrderId}/complete`, null)
+}
+
+export async function apiAdminCancelOrder(publicOrderId: string, reason: string) {
+    return Axios.post(`/orders/admin/${publicOrderId}/cancel`, { reason })
+}
+
