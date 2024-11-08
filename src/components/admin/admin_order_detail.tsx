@@ -448,10 +448,16 @@ function AdminOrderDetail() {
 							<span>Total</span>
 							<span>{_currency(currentOrder.total)}</span>
 						</div>
+                        <div className="flex justify-between mt-2 text-lg font-bold">
+							<span>Paid via</span>
+							<span className="font-normal">Paypal</span>
+						</div>
+                        <div className="flex justify-between mt-2 text-lg font-bold">
+							<span>Paypal Order ID</span>
+							<span className="font-normal">{currentOrder?.paypalOrderId}</span>
+						</div>
 					</div>
 				</div>
-
-				<ChargeSummary />
 				{/* Customer Information */}
 				<CustomerInfo />
 			</div>

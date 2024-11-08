@@ -131,36 +131,6 @@ function CartItem({ items, cartItem }: { cartItem: OrderCartItem; items: OrderIt
 	)
 }
 
-function ChargeSummary() {
-	const { currentOrder } = useOrder()
-
-	if (!currentOrder) {
-		return <></>
-	}
-
-	return (
-		<div className="bg-gray-50 p-6 rounded-lg">
-			<h3 className="text-lg font-medium text-gray-900 mb-4">Charge Summary</h3>
-			<div className="space-y-3">
-				<div className="flex justify-between">
-					<span className="text-gray-600">Total</span>
-					<span>{_currency(currentOrder.total)}</span>
-				</div>
-				<div className="flex justify-between">
-					<span className="text-gray-600">Transaction ID</span>
-					<span>{currentOrder.charge?.transaction_id}</span>
-				</div>
-				<div className="flex justify-between">
-					<span className="text-gray-600">Paid at</span>
-					<span>
-						{new Date(currentOrder.charge?.createdAt).toLocaleString()}
-					</span>
-				</div>
-			</div>
-		</div>
-	)
-}
-
 function CustomerInfo() {
 	const { currentOrder } = useOrder()
 
@@ -239,10 +209,18 @@ function OrderDetail() {
 							<span>Total</span>
 							<span>{_currency(currentOrder.total)}</span>
 						</div>
+						<div className="flex justify-between mt-2 text-lg font-bold">
+							<span>Paid via</span>
+							<span className="font-normal">Paypal</span>
+						</div>
+						<div className="flex justify-between mt-2 text-lg font-bold">
+							<span>Paypal Order ID</span>
+							<span className="font-normal">
+								{currentOrder.paypalOrderId}
+							</span>
+						</div>
 					</div>
 				</div>
-
-				<ChargeSummary />
 				{/* Customer Information */}
 				<CustomerInfo />
 			</div>

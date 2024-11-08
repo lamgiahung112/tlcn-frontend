@@ -12,14 +12,14 @@ export interface CreateOrderDto {
 		customerAddress: string
 		customerEmail: string
 	}
-	paymentMethodId: string
+	paypalOrderId: string
 }
 
 export interface FilterOrderDto {
-    page: number
-    perPage: number
-    publicOrderId?: string
-    status?: OrderStatus
+	page: number
+	perPage: number
+	publicOrderId?: string
+	status?: OrderStatus
 }
 
 export async function apiCreateOrder(data: CreateOrderDto) {
@@ -27,11 +27,17 @@ export async function apiCreateOrder(data: CreateOrderDto) {
 }
 
 export async function apiFilterOrders(data: FilterOrderDto) {
-    return Axios.get<Paginated<Order>, FilterOrderDto>("/orders", data)
+	return Axios.get<Paginated<Order>, FilterOrderDto>("/orders", data)
 }
 
 export async function apiGetOrder(publicOrderId: string, email: string) {
-    return Axios.post<Order, { email: string }>(`/orders/${publicOrderId}`, { email })
+	return Axios.post<Order, { email: string }>(`/orders/${publicOrderId}`, { email })
+}
+
+export async function apiCreatePaymentOrder(amount: number) {
+	return Axios.post<{ id: string }, { amount: number }>("/payment/create-order", {
+		amount,
+	})
 }
 
 export async function apiAdminGetOrder(publicOrderId: string) {

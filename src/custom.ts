@@ -74,18 +74,9 @@ interface Order {
 	customerPhone: string
 	customerAddress: string
 	customerEmail: string
+	paypalOrderId: string
 	orderItems: OrderItem[]
 	orderCartItems: OrderCartItem[]
-	charge: Charge
-}
-
-interface Charge {
-	id: number
-	transaction_id: string
-	orderId: number
-	amount: number
-	createdAt: Date
-	order: Order
 }
 
 interface OrderItem {
@@ -128,7 +119,6 @@ interface CartItemDetail {
 
 export { Category, OrderStatus }
 export type {
-	Charge,
 	GenericMotorbike,
 	Motorbike,
 	Order,
