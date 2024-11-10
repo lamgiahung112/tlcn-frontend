@@ -11,6 +11,11 @@ import CartDetailPage from "./pages/customer/cart_detail"
 import ViewOrderPage from "./pages/customer/view_order"
 import AdminOrderPage from "./pages/admin/orders"
 import AdminOrderDetailPage from "./pages/admin/order_detail"
+import AdminPostPage from "./pages/admin/post"
+import AdminCreatePostPage from "./pages/admin/create_post"
+import AdminEditPostPage from "./pages/admin/edit.post"
+import PostPage from "./pages/customer/post"
+import PostDetailPage from "./pages/customer/post_detail"
 
 const router = createBrowserRouter([
 	{
@@ -54,6 +59,22 @@ const router = createBrowserRouter([
 		element: (
 			<CustomerPage>
 				<ViewOrderPage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/posts",
+		element: (
+			<CustomerPage>
+				<PostPage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/posts/:id",
+		element: (
+			<CustomerPage>
+				<PostDetailPage />
 			</CustomerPage>
 		),
 	},
@@ -106,6 +127,30 @@ const router = createBrowserRouter([
 		element: (
 			<AdminPage>
 				<AdminOrderDetailPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/posts",
+		element: (
+			<AdminPage>
+				<AdminPostPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/posts/create",
+		element: (
+			<AdminPage>
+				<AdminCreatePostPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/posts/:id",
+		element: (
+			<AdminPage>
+				<AdminEditPostPage />
 			</AdminPage>
 		),
 	},

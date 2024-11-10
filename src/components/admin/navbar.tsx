@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom"
-import { FaHome, FaMotorcycle, FaShoppingCart, FaCog, FaImage } from "react-icons/fa"
+import { FaHome, FaMotorcycle, FaShoppingCart, FaImage, FaFile } from "react-icons/fa"
 
 const navItems = [
 	{ name: "Dashboard", icon: FaHome, path: "/admin/dashboard" },
 	{ name: "Motorbikes", icon: FaMotorcycle, path: "/admin/generic_motorbikes" },
 	{ name: "Image Resources", icon: FaImage, path: "/admin/image_resources" },
 	{ name: "Orders", icon: FaShoppingCart, path: "/admin/orders" },
-	{ name: "Settings", icon: FaCog, path: "/admin/settings" },
+	{ name: "Posts", icon: FaFile, path: "/admin/posts" },
 ]
 
 function Navbar() {

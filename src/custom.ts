@@ -117,6 +117,18 @@ interface CartItemDetail {
 	quantity: number
 }
 
+interface Post {
+	id: number
+	title: string
+	content: string
+	isPublished: boolean
+	thumbnailResourceId: number
+	createdAt: Date
+	updatedAt: Date
+	thumbnailResource: ImageResource
+	excerpt: string
+}
+
 export { Category, OrderStatus }
 export type {
 	GenericMotorbike,
@@ -128,4 +140,5 @@ export type {
 	GenericMotorbikeImage,
 	ImageResource,
 	CartItemDetail,
+	Post,
 }
