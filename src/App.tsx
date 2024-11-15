@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import AdminPage from "./pages/admin"
 import LoginPage from "./pages/admin/login"
 import AdminGenericMotorbikePage from "./pages/admin/generic_motorbike"
@@ -20,7 +20,7 @@ import PostDetailPage from "./pages/customer/post_detail"
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <div>ok</div>,
+		element: <Navigate to="/motorbikes" replace />,
 	},
 	{
 		path: "/motorbikes",
