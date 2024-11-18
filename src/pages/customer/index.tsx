@@ -1,11 +1,18 @@
 import { Navbar } from "@/components/customer"
-import { ReactNode } from "react"
+import useUser from "@/hooks/zustand/useUser"
+import { ReactNode, useEffect } from "react"
 
 type CustomerPageProps = {
 	children: ReactNode
 }
 
 function CustomerPage(props: CustomerPageProps) {
+	const { getUser, isLoaded } = useUser()
+	useEffect(() => {
+		if (!isLoaded) {
+			getUser()
+		}
+	}, [isLoaded])
 	return (
 		<>
 			<Navbar />

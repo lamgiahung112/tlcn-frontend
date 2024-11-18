@@ -2,7 +2,7 @@ import useAdmin from "@/hooks/zustand/useAdmin"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function LoginPage() {
+function AdminLoginPage() {
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
 	const [error, setError] = useState("")
@@ -10,27 +10,24 @@ function LoginPage() {
 
 	const { isAuthenticated, login } = useAdmin()
 
-    const onSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        login(username, password).catch(setError)
-    }
+	const onSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		login(username, password).catch(setError)
+	}
 
 	if (isAuthenticated) {
 		navigate("/admin")
 	}
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div>
 					<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
 						Admin Login
 					</h2>
 				</div>
-				<form
-					className="mt-8 space-y-6"
-					onSubmit={onSubmit}
-				>
+				<form className="mt-8 space-y-6" onSubmit={onSubmit}>
 					<input type="hidden" name="remember" value="true" />
 					<div className="rounded-md shadow-sm -space-y-px">
 						<div>
@@ -81,4 +78,4 @@ function LoginPage() {
 	)
 }
 
-export default LoginPage
+export default AdminLoginPage

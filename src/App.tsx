@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import AdminPage from "./pages/admin"
-import LoginPage from "./pages/admin/login"
+import LoginPage from "./pages/customer/login"
 import AdminGenericMotorbikePage from "./pages/admin/generic_motorbike"
 import AdminImageResourcesPage from "./pages/admin/image_resources"
 import AdminGenericMotorbikeDetailPage from "./pages/admin/generic_motorbike_detail"
@@ -16,11 +16,25 @@ import AdminCreatePostPage from "./pages/admin/create_post"
 import AdminEditPostPage from "./pages/admin/edit.post"
 import PostPage from "./pages/customer/post"
 import PostDetailPage from "./pages/customer/post_detail"
+import AdminLoginPage from "./pages/admin/login"
+import VerifyLoginLinkPage from "./pages/customer/verify_login_link"
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Navigate to="/motorbikes" replace />,
+	},
+	{
+		path: "/login",
+		element: (
+			<CustomerPage>
+				<LoginPage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/auth/login",
+		element: <VerifyLoginLinkPage />,
 	},
 	{
 		path: "/motorbikes",
@@ -88,7 +102,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/admin/login",
-		element: <LoginPage />,
+		element: <AdminLoginPage />,
 	},
 	{
 		path: "/admin/generic_motorbikes",

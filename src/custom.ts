@@ -70,6 +70,8 @@ interface Order {
 	startedDeliveryAt?: Date
 	completedAt?: Date
 	cancelledAt?: Date
+	customer: User
+	customerId: number
 	customerName: string
 	customerPhone: string
 	customerAddress: string
@@ -129,6 +131,13 @@ interface Post {
 	excerpt: string
 }
 
+interface User {
+	id: number
+	email: string
+	phoneNumber: string
+	name: string
+}
+
 export { Category, OrderStatus }
 export type {
 	GenericMotorbike,
@@ -141,4 +150,5 @@ export type {
 	ImageResource,
 	CartItemDetail,
 	Post,
+	User,
 }
