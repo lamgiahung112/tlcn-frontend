@@ -2,10 +2,10 @@ import { CouponType, OrderCartItem, OrderItem, OrderStatus } from "@/custom"
 import { useOrder } from "@/hooks/zustand/useOrder"
 import { _currency } from "@/utils/format"
 import { _imgLink } from "@/utils/img-link"
-import { useState } from "react"
+import { useEffect } from "react"
 import { BsCheck2Circle, BsCircle } from "react-icons/bs"
 import { FaChevronLeft } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 function OrderStatusProgress({ status }: { status: OrderStatus }) {
 	const steps = [
@@ -128,7 +128,6 @@ function OrderStatusHistory() {
 }
 
 function CartItem({ items, cartItem }: { cartItem: OrderCartItem; items: OrderItem[] }) {
-	// add something that shows the engine code and chassis code of the motorbike
 	return (
 		<div className="flex items-center py-4 border-b">
 			<img
@@ -146,19 +145,6 @@ function CartItem({ items, cartItem }: { cartItem: OrderCartItem; items: OrderIt
 				<p className="text-gray-500">
 					{_currency(items?.reduce((acc, i) => acc + i?.motorbike?.price, 0))}
 				</p>
-			</div>
-			<div className="mt-3 ml-24">
-				<h4 className="text-sm font-medium text-gray-700 mb-2">
-					Motorbike Details:
-				</h4>
-				<div className="grid grid-cols-2 gap-4">
-					{items.map((item, index) => (
-						<div key={index} className="text-sm text-gray-600">
-							<p>Engine Code: {item.motorbike.engineCode}</p>
-							<p>Chassis Code: {item.motorbike.chassisCode}</p>
-						</div>
-					))}
-				</div>
 			</div>
 		</div>
 	)
@@ -197,209 +183,31 @@ function CustomerInfo() {
 	)
 }
 
-function OrderActions() {
-	const { currentOrder, confirmOrder, startDelivery, completeOrder, cancelOrder } =
-		useOrder()
-	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
-	const [isDeliverModalOpen, setIsDeliverModalOpen] = useState(false)
-	const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false)
-	const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
-	const [cancelReason, setCancelReason] = useState("")
+function UserOrderDetailPage() {
+	const { currentOrder, getAdminOrder } = useOrder()
+	const { orderPublicId } = useParams()
+	const navigate = useNavigate()
 
-	if (!currentOrder) return null
-
-	const handleConfirm = async () => {
-		await confirmOrder(currentOrder.publicOrderId)
-		setIsConfirmModalOpen(false)
-	}
-
-	const handleDeliver = async () => {
-		await startDelivery(currentOrder.publicOrderId)
-		setIsDeliverModalOpen(false)
-	}
-
-	const handleComplete = async () => {
-		await completeOrder(currentOrder.publicOrderId)
-		setIsCompleteModalOpen(false)
-	}
-
-	const handleCancel = async () => {
-		if (!cancelReason.trim()) return
-		await cancelOrder(currentOrder.publicOrderId, cancelReason)
-		setIsCancelModalOpen(false)
-		setCancelReason("")
-	}
-
-	return (
-		<>
-			<div className="bg-white p-6 rounded-lg shadow">
-				<h3 className="text-lg font-medium text-gray-900 mb-4">Order Actions</h3>
-				<div className="flex gap-4">
-					{currentOrder.status === OrderStatus.CREATED && (
-						<>
-							<button
-								onClick={() => setIsConfirmModalOpen(true)}
-								className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-							>
-								Confirm Order
-							</button>
-							<button
-								onClick={() => setIsCancelModalOpen(true)}
-								className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-							>
-								Cancel Order
-							</button>
-						</>
-					)}
-					{currentOrder.status === OrderStatus.CONFIRMED && (
-						<button
-							onClick={() => setIsDeliverModalOpen(true)}
-							className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-						>
-							Start Delivery
-						</button>
-					)}
-					{currentOrder.status === OrderStatus.DELIVERY_STARTED && (
-						<button
-							onClick={() => setIsCompleteModalOpen(true)}
-							className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
-						>
-							Complete Order
-						</button>
-					)}
-				</div>
-			</div>
-
-			{/* Confirm Modal */}
-			{isConfirmModalOpen && (
-				<div className="fixed inset-0 top-[-64px] bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-						<h3 className="text-lg font-medium mb-4">Confirm Order</h3>
-						<p>Are you sure you want to confirm this order?</p>
-						<div className="mt-4 flex justify-end gap-4">
-							<button
-								onClick={() => setIsConfirmModalOpen(false)}
-								className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleConfirm}
-								className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-							>
-								Confirm
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
-			{/* Deliver Modal */}
-			{isDeliverModalOpen && (
-				<div className="fixed inset-0 top-[-64px] bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-						<h3 className="text-lg font-medium mb-4">Start Delivery</h3>
-						<p>Are you sure you want to start delivery for this order?</p>
-						<div className="mt-4 flex justify-end gap-4">
-							<button
-								onClick={() => setIsDeliverModalOpen(false)}
-								className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleDeliver}
-								className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-							>
-								Start Delivery
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
-			{/* Complete Modal */}
-			{isCompleteModalOpen && (
-				<div className="fixed inset-0 top-[-64px] bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-						<h3 className="text-lg font-medium mb-4">Complete Order</h3>
-						<p>Are you sure you want to mark this order as completed?</p>
-						<div className="mt-4 flex justify-end gap-4">
-							<button
-								onClick={() => setIsCompleteModalOpen(false)}
-								className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleComplete}
-								className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
-							>
-								Complete
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
-			{/* Cancel Modal */}
-			{isCancelModalOpen && (
-				<div className="fixed inset-0 top-[-64px] bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-						<h3 className="text-lg font-medium mb-4">Cancel Order</h3>
-						<div className="mb-4">
-							<label className="block text-sm font-medium text-gray-700 mb-2">
-								Cancellation Reason
-							</label>
-							<textarea
-								value={cancelReason}
-								onChange={(e) => setCancelReason(e.target.value)}
-								className="w-full p-2 border rounded"
-								rows={3}
-								placeholder="Enter reason for cancellation..."
-							/>
-						</div>
-						<div className="flex justify-end gap-4">
-							<button
-								onClick={() => {
-									setIsCancelModalOpen(false)
-									setCancelReason("")
-								}}
-								className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleCancel}
-								className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-								disabled={!cancelReason.trim()}
-							>
-								Confirm Cancellation
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-		</>
-	)
-}
-
-function AdminOrderDetail() {
-	const { currentOrder } = useOrder()
+	useEffect(() => {
+		if (orderPublicId) {
+			getAdminOrder(orderPublicId)
+		}
+	}, [orderPublicId])
 
 	if (!currentOrder) {
 		return <></>
 	}
 
 	return (
-		<div className="w-full px-4 py-8">
-			<div className="flex flex-col gap-4">
-				<Link to="/admin/orders" className="flex items-center gap-2">
-					<FaChevronLeft />
-					<span>Back to List</span>
-				</Link>
-			</div>
+		<div className="max-w-4xl mx-auto px-4 py-8">
 			<div className="space-y-8">
+				<div
+					className="flex items-center gap-2 cursor-pointer"
+					onClick={() => navigate(-1)}
+				>
+					<FaChevronLeft />
+					<span>Back to Orders</span>
+				</div>
 				{/* Title and Order ID */}
 				<div className="text-center">
 					<h1 className="text-3xl font-bold text-gray-900">Order Detail</h1>
@@ -410,8 +218,6 @@ function AdminOrderDetail() {
 
 				{/* Progress Tracker */}
 				<OrderStatusProgress status={currentOrder.status} />
-				<OrderActions />
-
 				<OrderStatusHistory />
 
 				{/* Order Items */}
@@ -463,7 +269,7 @@ function AdminOrderDetail() {
 						<div className="flex justify-between mt-2 text-lg font-bold">
 							<span>Paypal Order ID</span>
 							<span className="font-normal">
-								{currentOrder?.paypalOrderId}
+								{currentOrder.paypalOrderId}
 							</span>
 						</div>
 						<div className="flex justify-between mt-2 text-lg font-bold">
@@ -481,4 +287,4 @@ function AdminOrderDetail() {
 	)
 }
 
-export default AdminOrderDetail
+export default UserOrderDetailPage

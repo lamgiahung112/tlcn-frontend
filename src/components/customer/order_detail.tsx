@@ -1,4 +1,4 @@
-import { OrderCartItem, OrderItem, OrderStatus } from "@/custom"
+import { CouponType, OrderCartItem, OrderItem, OrderStatus } from "@/custom"
 import { useOrder } from "@/hooks/zustand/useOrder"
 import { _currency } from "@/utils/format"
 import { _imgLink } from "@/utils/img-link"
@@ -201,6 +201,25 @@ function OrderDetail() {
 								)}
 							/>
 						))}
+						{currentOrder &&
+							currentOrder.coupon &&
+							currentOrder.coupon.type === CouponType.ITEM && (
+								<div className="flex items-center py-4 border-b">
+									<img
+										src={_imgLink(
+											currentOrder.coupon?.itemImageResource
+												?.s3Key ?? ""
+										)}
+										alt="img motorbike"
+										className="w-20 h-20 object-cover rounded-lg"
+									/>
+									<div className="ml-4 flex-1">
+										<h3 className="font-medium text-gray-900">
+											{currentOrder.coupon?.itemName}
+										</h3>
+									</div>
+								</div>
+							)}
 					</div>
 
 					{/* Order Summary */}
@@ -217,6 +236,12 @@ function OrderDetail() {
 							<span>Paypal Order ID</span>
 							<span className="font-normal">
 								{currentOrder.paypalOrderId}
+							</span>
+						</div>
+						<div className="flex justify-between mt-2 text-lg font-bold">
+							<span>Applied Coupon</span>
+							<span className="font-normal">
+								{currentOrder.coupon?.code}
 							</span>
 						</div>
 					</div>

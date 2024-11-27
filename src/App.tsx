@@ -18,6 +18,15 @@ import PostPage from "./pages/customer/post"
 import PostDetailPage from "./pages/customer/post_detail"
 import AdminLoginPage from "./pages/admin/login"
 import VerifyLoginLinkPage from "./pages/customer/verify_login_link"
+import UserDashboardPage from "./pages/customer/user_dashboard"
+import UserMotorbikePage from "./pages/customer/user_motorbikes"
+import AdminServiceTokenPage from "./pages/admin/service_token"
+import AdminCouponPage from "./pages/admin/coupons"
+import AdminCreateCouponPage from "./pages/admin/create_coupon"
+import AdminCouponDetailPage from "./pages/admin/coupon_detail"
+import OrderDetail from "./components/customer/order_detail"
+import UserOrderDetailPage from "./pages/customer/user_order_detail"
+import RegisterPage from "./pages/customer/register"
 
 const router = createBrowserRouter([
 	{
@@ -33,8 +42,40 @@ const router = createBrowserRouter([
 		),
 	},
 	{
+		path: "/user",
+		element: (
+			<CustomerPage>
+				<UserDashboardPage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/user/motorbikes/:id",
+		element: (
+			<CustomerPage>
+				<UserMotorbikePage />
+			</CustomerPage>
+		),
+	},
+	{
+		path: "/user/orders/:orderPublicId",
+		element: (
+			<CustomerPage>
+				<UserOrderDetailPage />
+			</CustomerPage>
+		),
+	},
+	{
 		path: "/auth/login",
 		element: <VerifyLoginLinkPage />,
+	},
+	{
+		path: "/register",
+		element: (
+			<CustomerPage>
+				<RegisterPage />
+			</CustomerPage>
+		),
 	},
 	{
 		path: "/motorbikes",
@@ -165,6 +206,38 @@ const router = createBrowserRouter([
 		element: (
 			<AdminPage>
 				<AdminEditPostPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/service_tokens",
+		element: (
+			<AdminPage>
+				<AdminServiceTokenPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/coupons",
+		element: (
+			<AdminPage>
+				<AdminCouponPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/coupons/create",
+		element: (
+			<AdminPage>
+				<AdminCreateCouponPage />
+			</AdminPage>
+		),
+	},
+	{
+		path: "/admin/coupons/:code",
+		element: (
+			<AdminPage>
+				<AdminCouponDetailPage />
 			</AdminPage>
 		),
 	},

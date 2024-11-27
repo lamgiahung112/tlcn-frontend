@@ -1,5 +1,13 @@
 import { Link, useLocation } from "react-router-dom"
-import { FaHome, FaMotorcycle, FaShoppingCart, FaImage, FaFile } from "react-icons/fa"
+import {
+	FaHome,
+	FaMotorcycle,
+	FaShoppingCart,
+	FaImage,
+	FaFile,
+	FaKey,
+	FaTag,
+} from "react-icons/fa"
 
 const navItems = [
 	{ name: "Dashboard", icon: FaHome, path: "/admin/dashboard" },
@@ -7,6 +15,8 @@ const navItems = [
 	{ name: "Image Resources", icon: FaImage, path: "/admin/image_resources" },
 	{ name: "Orders", icon: FaShoppingCart, path: "/admin/orders" },
 	{ name: "Posts", icon: FaFile, path: "/admin/posts" },
+	{ name: "Service Tokens", icon: FaKey, path: "/admin/service_tokens" },
+	{ name: "Coupons", icon: FaTag, path: "/admin/coupons" },
 ]
 
 function Navbar() {

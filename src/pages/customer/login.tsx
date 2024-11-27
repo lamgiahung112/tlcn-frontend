@@ -1,6 +1,6 @@
 import useUser from "@/hooks/zustand/useUser"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 function LoginPage() {
 	const { isLoaded, user, getUser, sendLoginLink } = useUser()
@@ -54,6 +54,12 @@ function LoginPage() {
 								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
 								placeholder="Enter your email"
 							/>
+						</div>
+						<div className="text-center text-sm text-gray-500">
+							Doesn't have an account?{" "}
+							<Link className="text-blue-500" to="/register">
+								Register
+							</Link>
 						</div>
 						<button
 							type="submit"

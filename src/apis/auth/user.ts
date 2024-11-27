@@ -1,8 +1,8 @@
 import { User } from "@/custom"
 import { Axios } from "@/utils/Axios"
 
-export const register = async (email: string, password: string) => {
-	return Axios.post("/auth/register", { email, password })
+export const register = async (email: string, name: string, phoneNumber: string) => {
+	return Axios.post("/auth/register", { email, name, phoneNumber })
 }
 
 export const sendLoginLink = async (email: string) => {

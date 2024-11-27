@@ -40,6 +40,12 @@ const Navbar = () => {
 						>
 							KHUYẾN MÃI
 						</Link>
+						<Link
+							to="/orders"
+							className="text-gray-700 hover:text-blue-600 transition-colors"
+						>
+							KIỂM TRA ĐƠN HÀNG
+						</Link>
 						<Link to="/cart" className="relative">
 							<FaShoppingCart className="text-2xl text-gray-700 hover:text-blue-600 transition-colors" />
 							<span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">

@@ -4,6 +4,12 @@ enum Category {
 	STROKE = "STROKE",
 }
 
+enum CouponType {
+	PERCENTAGE = "PERCENTAGE",
+	FIXED = "FIXED",
+	ITEM = "ITEM",
+}
+
 enum OrderStatus {
 	CREATED = "CREATED",
 	CANCELLED = "CANCELLED",
@@ -57,6 +63,11 @@ interface Motorbike {
 	isSold: boolean
 	createdAt: Date
 	updatedAt: Date
+	genericMotorbike: GenericMotorbike
+	plateNumber?: string
+	odometer: number
+	soldAt?: Date
+	serviceTokens?: ServiceToken[]
 }
 
 interface Order {
@@ -77,6 +88,8 @@ interface Order {
 	customerAddress: string
 	customerEmail: string
 	paypalOrderId: string
+	couponId?: number
+	coupon?: Coupon
 	orderItems: OrderItem[]
 	orderCartItems: OrderCartItem[]
 }
@@ -138,7 +151,44 @@ interface User {
 	name: string
 }
 
-export { Category, OrderStatus }
+interface ServiceToken {
+	id: number
+	motorbikeId: number
+	minMonth: number
+	maxMonth: number
+	maxOdometer: number
+	isEligible: boolean
+	usedAt?: Date
+	createdAt: Date
+	motorbike: Motorbike
+}
+
+interface ServiceAppointment {
+	id: number
+	serviceTokenId: number
+	date: Date
+	cancelledAt?: Date
+	completedAt?: Date
+	createdAt: Date
+	serviceToken: ServiceToken
+}
+
+interface Coupon {
+	id: number
+	code: string
+	discount: number
+	type: CouponType
+	itemImageResourceId?: number
+	itemName?: string
+	createdAt: Date
+	expiredAt?: Date // Added
+	maxUsage?: number // Added
+	isPublished: boolean // Added
+	itemImageResource: ImageResource
+	orders?: Order[] // Added
+}
+
+export { Category, OrderStatus, CouponType }
 export type {
 	GenericMotorbike,
 	Motorbike,
@@ -151,4 +201,7 @@ export type {
 	CartItemDetail,
 	Post,
 	User,
+	ServiceToken,
+	ServiceAppointment,
+	Coupon,
 }

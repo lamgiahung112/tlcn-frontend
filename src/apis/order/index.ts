@@ -13,6 +13,7 @@ export interface CreateOrderDto {
 		customerEmail: string
 	}
 	paypalOrderId: string
+	couponCode?: string
 }
 
 export interface FilterOrderDto {
@@ -41,22 +42,21 @@ export async function apiCreatePaymentOrder(amount: number) {
 }
 
 export async function apiAdminGetOrder(publicOrderId: string) {
-    return Axios.get<Order>(`/orders/admin/${publicOrderId}`)
+	return Axios.get<Order>(`/orders/admin/${publicOrderId}`)
 }
 
 export async function apiAdminConfirmOrder(publicOrderId: string) {
-    return Axios.post(`/orders/admin/${publicOrderId}/confirm`, null)
+	return Axios.post(`/orders/admin/${publicOrderId}/confirm`, null)
 }
 
 export async function apiAdminStartDelivery(publicOrderId: string) {
-    return Axios.post(`/orders/admin/${publicOrderId}/start-delivery`, null)
+	return Axios.post(`/orders/admin/${publicOrderId}/start-delivery`, null)
 }
 
 export async function apiAdminCompleteOrder(publicOrderId: string) {
-    return Axios.post(`/orders/admin/${publicOrderId}/complete`, null)
+	return Axios.post(`/orders/admin/${publicOrderId}/complete`, null)
 }
 
 export async function apiAdminCancelOrder(publicOrderId: string, reason: string) {
-    return Axios.post(`/orders/admin/${publicOrderId}/cancel`, { reason })
+	return Axios.post(`/orders/admin/${publicOrderId}/cancel`, { reason })
 }
-

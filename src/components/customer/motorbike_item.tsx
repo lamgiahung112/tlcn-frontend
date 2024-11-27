@@ -1,4 +1,5 @@
 import { GenericMotorbike } from '@/custom';
+import { _currency } from '@/utils/format';
 import { _imgLink } from '@/utils/img-link';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -22,7 +23,7 @@ const MotorbikeItem: React.FC<MotorbikeItemProps> = ({ item }) => {
       <div className="p-4">
         <h2 className="text-xl font-bold mb-2">{item.name}</h2>
         <p className="text-gray-600 mb-2">{item.model} | {item.category}</p>
-        <p className="text-green-600 font-bold mb-2">${item.recommendedPrice.toLocaleString()}</p>
+        <p className="text-green-600 font-bold mb-2">{_currency(item.recommendedPrice)}</p>
         <div className="flex items-center gap-2 mb-4">
           <div 
             className="w-6 h-6 rounded-full border border-gray-200" 

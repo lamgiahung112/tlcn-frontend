@@ -1,5 +1,5 @@
 import { apiGetCartDetail } from "@/apis/cart";
-import { CartItemDetail } from "@/custom";
+import { CartItemDetail, Coupon } from "@/custom";
 import { create } from "zustand"
 
 interface CartItem {
@@ -11,12 +11,13 @@ interface CartState {
     cart: CartItem[];
     cartDetail: CartItemDetail[]
     totalPrice: number
+    coupon: Coupon | null
     maxQuantity: Record<number, number>
     errors: Record<number, string>
 }
 
 interface CartActions {
-    fetchCartDetail: () => Promise<void>;
+    fetchCartDetail: (couponCode?: string) => Promise<void>;
     updateCartDetail: (genericMotorbikeId: number, quantity: number) => Promise<void>;
     removeFromCartDetail: (genericMotorbikeId: number) => Promise<void>;
     updateCart: (genericMotorbikeId: number, quantity: number) => void;
@@ -30,6 +31,7 @@ const useCart = create<CartState & CartActions>((set, get) => ({
     maxQuantity: {},
     errors: {},
     cartDetail: [],
+    coupon: null,
     clearCart() {
         set({ cart: [], cartDetail: [] })
         localStorage.setItem('cart', '[]')
@@ -49,13 +51,14 @@ const useCart = create<CartState & CartActions>((set, get) => ({
         // Refresh cart details
         await get().fetchCartDetail();
     },
-    async fetchCartDetail() {
-        const cartDetail = await apiGetCartDetail(get().cart)
+    async fetchCartDetail(couponCode?: string) {
+        const cartDetail = await apiGetCartDetail(get().cart, couponCode)
         set({ 
             cartDetail: cartDetail.cart, 
             totalPrice: cartDetail.metadata.totalPrice, 
             maxQuantity: cartDetail.metadata.maxQuantity, 
             errors: cartDetail.metadata.errors,
+            coupon: cartDetail.metadata.coupon,
             cart: cartDetail.cart.map((item) => ({ genericMotorbikeId: item.item.id, quantity: item.quantity }))
         })
         localStorage.setItem('cart', JSON.stringify(get().cart))
