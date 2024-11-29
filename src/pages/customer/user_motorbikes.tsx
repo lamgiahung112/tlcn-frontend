@@ -23,7 +23,11 @@ function UserMotorbikePage() {
 			</Link>
 			<div className="flex flex-col gap-y-4 p-8">
 				<div className="flex gap-x-4">
-					<div className="w-1/2" draggable={false} onMouseDown={onMouseDown}>
+					<div
+						className="w-1/2 cursor-grab"
+						draggable={false}
+						onMouseDown={onMouseDown}
+					>
 						<img
 							src={_imgLink(
 								motorbike?.genericMotorbike.images[currentImageIndex]
@@ -31,7 +35,7 @@ function UserMotorbikePage() {
 							)}
 							alt={motorbike?.genericMotorbike.name}
 						/>
-					</div>  
+					</div>
 					<div className="w-1/2 flex flex-col gap-y-4">
 						<h1 className="text-3xl font-bold">
 							{motorbike?.genericMotorbike.name}

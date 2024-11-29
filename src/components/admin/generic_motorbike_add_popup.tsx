@@ -54,6 +54,8 @@ const GenericMotorbikeAddPopup: React.FC<GenericMotorbikeAddPopupProps> = ({
       recommendedPrice: formData.recommendedPrice!,
       engineSpecs, 
       chassisSpecs, 
+      colorInHex: formData.colorInHex!,
+      colorName: formData.colorName!,
       warrantySpecs, 
       images: mainImages.concat(galleryImages)
     }
